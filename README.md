@@ -94,6 +94,12 @@ Strong success criteria let the LLM loop independently. Weak criteria ("make it 
 
 **Option A: Claude Code Plugin (recommended)**
 
+From within Claude Code:
+```
+/plugin add https://github.com/forrestchang/andrej-karpathy-skills
+```
+
+Or from your terminal:
 ```bash
 claude plugins add https://github.com/forrestchang/andrej-karpathy-skills
 ```
