@@ -119,6 +119,23 @@ echo "" >> CLAUDE.md
 curl https://raw.githubusercontent.com/forrestchang/andrej-karpathy-skills/main/CLAUDE.md >> CLAUDE.md
 ```
 
+## Recommended: enforcement with no-phase
+
+These guidelines are advisory — they shape how an agent works, but nothing
+*checks* the output. If you want the naming hygiene enforced mechanically —
+no `Phase N`-style ordinal labels leaking into commit messages, headers, or
+comments — pair this with **no-phase**, a standalone linter and git hook that
+flags those tells:
+
+- Repo: https://github.com/connollydavid/no-phase-skill
+- Install (SKILL.md): https://github.com/connollydavid/no-phase-skill/blob/main/SKILL.md
+- Usage & details (README): https://github.com/connollydavid/no-phase-skill/blob/main/README.md
+
+It's optional and fully independent: no-phase needs nothing from this template,
+and this template assumes nothing about no-phase being present — add the
+guardrail if and when you want it. The install drops in a binary plus a
+pre-commit / commit-msg hook.
+
 ## Key Insight
 
 From Andrej:
