@@ -175,10 +175,8 @@ The goal is reducing costly mistakes on non-trivial work, not slowing down simpl
 
 ## Provenance
 
-Adapted from [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) (which stated MIT terms), itself derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls.
-
-The guidelines in `CLAUDE.md` are released for unrestricted reuse — adopt them into any project with no license or attribution obligation. The [`LICENSE`](LICENSE) governs this template repository, not works built from it.
+Forked from [`multica-ai/andrej-karpathy-skills`](https://github.com/multica-ai/andrej-karpathy-skills) by [Jiayuan Zhang (@forrestchang)](https://github.com/forrestchang) and contributors; the guidelines derive from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls. The upstream states MIT terms in prose, which this repository formalizes as a `LICENSE` file. Fork chain: `multica-ai` → `slartibardfast` → here.
 
 ## License
 
-[MIT](LICENSE) © 2026 David Connolly
+[MIT](LICENSE) — © 2026 Jiayuan Zhang and the andrej-karpathy-skills contributors.
