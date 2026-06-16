@@ -1,8 +1,8 @@
 # Structure
 
-The agentic host is the externalized *thought* about the work; the software
-under development is the *action*, hosted beneath it. The host's rooms map to the
-five W's.
+An agentic project (e.g. `agentic-acme`) is the externalized *thought* about the
+work; the software under development is the *action*, hosted beneath it. Its
+rooms map to the five W's.
 
 | W | room | holds |
 |---|---|---|

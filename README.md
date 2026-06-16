@@ -1,6 +1,6 @@
 # host-template
 
-A template for starting a project as an **agentic host**: a thin governance shell
+A template for starting an **agentic project** (e.g. `agentic-acme`): a thin governance shell
 that holds the *thought* about a piece of software — its plans, decisions,
 specifications, and the people it serves — while the software itself, the
 *action*, lives in a submodule beneath it.

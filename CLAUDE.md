@@ -1,4 +1,4 @@
-# CLAUDE.md — operating manual for an agentic host
+# CLAUDE.md — operating manual for an agentic project
 
 This file tells you, the agent, how to work in this repository. Follow it
 exactly. The rules are written to be literal: when one says "do X", do X — do
@@ -7,12 +7,12 @@ things, stop and ask the human before you act. Clarity beats cleverness here.
 
 ## What this repository is
 
-This repository is an **agentic host**. The host is the externalized *thought*
-about a piece of software: the plans, the decisions, the specifications, the
-people it serves, and the rules you work under. The software itself — the
-*action* — lives beneath the host as a bare store with worktrees (the *Where*
-room; `call/0004`). You write thought in the host and action in the worktree.
-Keep them separate.
+This repository is an **agentic project** (e.g. `agentic-acme`). It is the
+externalized *thought* about a piece of software: the plans, the decisions, the
+specifications, the people it serves, and the rules you work under. The software
+itself — the *action* — lives beneath the project as a bare store with worktrees
+(the *Where* room; `call/0004`). You write thought in the project and action in
+the worktree. Keep them separate.
 
 You are working in a *template*. A real project replaces the example personas
 with its own and adds its software as the hosted bare store with worktrees. The
