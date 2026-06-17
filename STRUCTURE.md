@@ -48,11 +48,17 @@ replace the `cast/` examples with your own personas, and set up your software as
 bare store with worktrees (above). To bring an *existing* repo under the
 methodology instead, follow the `host` repo (`github.com/connollydavid/host`).
 
-If you publish docs with mdBook, scope `src` to a dedicated `docs/` directory and
-pull content in with `{{#include}}` pointers — **do not** set `src = "."`. A
-root-scoped book walks the whole tree, descending into tool submodules and the
-software worktree, and trips over anything not currently materialized; a scoped
-`src` only renders what you list (`call/0005`).
+To publish docs with mdBook, run **`host-lifecycle book .`** — the canonical
+publisher, so you do not hand-roll a generator that drops a room or re-derives the
+src-scoping wrong. It writes a `book.toml` scoped to a generated `docs/` (never
+`src = "."`, which would walk the tool submodules and the un-materialized software
+worktree and trip over whatever is not present; `call/0005`) and a `SUMMARY.md` in
+**lifecycle order**: Cast (Who) → Plan + specs (What/When) → Software/Where (a stub
+read from `.host-software`) → Call (Why) → Reference/CLAUDE (How) → Memory. Then
+`host-lifecycle book --check .` fails the build unless every room with source
+renders a page, so a half-room site cannot ship. `book.toml` and `docs/` are
+generated output (gitignored); the reference Site workflow under
+`.github/workflows/` runs both before `mdbook build`.
 
 A migrated or instantiated repo carries a `.host` stamp at its root
 recording the template revision it adopted (`template`/`revision`/`adopted`),
