@@ -62,7 +62,9 @@ generated output (gitignored); the reference Site workflow under
 
 A migrated or instantiated repo carries a `.host` stamp at its root
 recording the template revision it adopted (`template`/`revision`/`adopted`),
-written by `host-lifecycle adopt`. It is what a later upgrade diffs from.
+written by `host-lifecycle adopt`. It is what a later upgrade diffs from. An
+optional `name` line pins the published book's title, so `host-lifecycle book`
+does not derive it from the checkout directory.
 
 The methodology lives in `CLAUDE.md` — read it first. The whole template is
 released into the public domain (Unlicense); see `README.md` for provenance.
