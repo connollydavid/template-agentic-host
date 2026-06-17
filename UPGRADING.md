@@ -42,3 +42,8 @@ keyed by the template revision at which its action became required.
     title    = Anti-ouroboros: call/ is for the software, methodology lives in the spine
     action   = The methodology is owned by the spine (copy-at-version), not your call/. In a single dedicated commit, set `Status: superseded by the spine` on every accepted call/ decision that merely restates a methodology rule now settled upstream (leave the file in place — MADR records are immutable). Add a `Scope:` header to each remaining accepted decision. Do not treat any host/management repo's top-level instance rooms as normative. `host-lifecycle validate <call-dir>` now fails an accepted decision missing `Scope:` or declaring `Scope: methodology`.
     requires = host-lifecycle v0.7.0
+
+[upgrade "07025a7"]
+    title    = book publisher v0.7.1: nested specs + retired-decision Archive
+    action   = Bump your pinned `host-lifecycle book` revision to v0.7.1. Two rendering changes follow on the next build: specs nested in `spec/<topic>/` now render (previously dropped), and decisions whose MADR `Status:` is superseded/deprecated/rejected move into a trailing "Archive / Record" section (banner + nav-label suffix) instead of shipping as current chapters. The record signal is `Status:` only — `.host-lintignore` does not affect the book.
+    requires = host-lifecycle v0.7.1
