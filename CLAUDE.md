@@ -11,7 +11,7 @@ This repository is an **agentic project** (e.g. `agentic-acme`). It is the
 externalized *thought* about a piece of software: the plans, the decisions, the
 specifications, the people it serves, and the rules you work under. The software
 itself — the *action* — lives beneath the project as a bare store with worktrees
-(the *Where* room; `call/0004`). You write thought in the project and action in
+(the *Where* room). You write thought in the project and action in
 the worktree. Keep them separate.
 
 You are working in a *template*. A real project replaces the example personas
@@ -120,6 +120,27 @@ decision in `call/`, in MADR (Markdown Any Decision Record) format. The bootstra
 decision `call/0000` explains the format and links to the MADR spec. One file per
 decision, `NNNN-slug.md`, number assigned when the decision is accepted.
 
+`call/` records decisions about **the software under development** — why your
+software is built as it is. It does **not** hold methodology decisions. The
+methodology is settled in this spine (`CLAUDE.md` + `STRUCTURE.md`), inherited by
+copy-at-version; a change to it is made in the template and propagated by
+`host-lifecycle upgrade`, never re-litigated as a project `call/`.
+
+**Anti-ouroboros.** A project must not feed on its own methodological tail. If a
+`call/` decision restates a methodology rule that is then settled or changed
+upstream in the spine, retire it the MADR way: set `Status: superseded by the
+spine` in place (records are immutable — you change status, never delete). The
+live (`accepted`) Why room then holds only decisions still in force.
+`host-lifecycle validate` fails an `accepted` decision that is missing a `Scope:`
+header or declares `Scope: methodology`. The template ships `call/0000` only as a
+worked example; replace it with your software's own decisions.
+
+**Inherit from the source, not from a host.** You inherit the methodology from
+*this template* (the versioned source you copy-at-version) alone. A host or
+management repo's **top-level instance contents** — its `call/`, `plan/`,
+`MEMORY.md`, the project-specific parts of its `CLAUDE.md` — are that project's own
+rooms and bind no adopter. Do not read them as normative.
+
 ## Specs — `plan/<milestone>/spec/`
 
 Each milestone carries its specifications in its own `spec/` folder:
@@ -164,7 +185,7 @@ Two rules govern the tools:
 
 The *output* a tool produces about your project (a report, a counterexample, a
 generated check) belongs to your project, not to the tool's license — the same
-way a compiler's license does not cover the program it compiles. See `call/0001`.
+way a compiler's license does not cover the program it compiles.
 
 ## The host-* tools
 
@@ -179,7 +200,7 @@ Three of the tools are ours, released into the public domain (Unlicense):
   `host-lifecycle validate <dir>` to check a folder. It also materialises and
   audits the *Where* room: `host-lifecycle software --materialize|--check <dir>`
   realises the `.host-software` bare store + worktrees and verifies each is at its
-  pin (`call/0004`).
+  pin.
 
 Because the generator and the checker share `host-grammar`, what host-lifecycle
 emits is exactly what host-lint accepts. Trust that symmetry; do not number by
@@ -206,8 +227,8 @@ past mistake.
 
 ## Software and submodule discipline
 
-The **tools** are submodules; the **software** is a bare store with worktrees
-(`call/0004`). Both follow a commit-upstream-first rule:
+The **tools** are submodules; the **software** is a bare store with worktrees.
+Both follow a commit-upstream-first rule:
 
 - **A tool submodule:** commit and push inside it (on `main`) first, then commit
   the updated submodule pointer in the host and push.
@@ -219,7 +240,7 @@ Never push a host commit whose tool pointer or software pin is not yet pushed. I
 a push fails (no network, no auth), stop, tell the human which commits are
 unpushed, and do not start work that depends on them.
 
-**Worktree-absence coherence (`call/0005`).** A separately-materialized path — the
+**Worktree-absence coherence.** A separately-materialized path — the
 software worktree, or a tool submodule — is absent (or empty) until materialized; a
 fresh clone, CI, and a partial submodule init do not have it. So **do not git-track
 an artifact that depends on such a path existing** (a skill symlink into

@@ -10,7 +10,7 @@ rooms map to the five W's.
 | What | `plan/NNNN-*/spec/` | behavioural (`.allium`) + temporal (`.tla/`) specs |
 | When | `plan/` | the milestone index and folders |
 | Where | `<software>/` | the hosted software — a bare store with worktrees; you add it |
-| Why | `call/` | decisions (MADR; see `call/0000`) |
+| Why | `call/` | decisions about the software (MADR; see `call/0000`) — methodology lives in the spine, not here |
 | How | `CLAUDE.md` + `tools/` | the verification lanes |
 
 `tools/` are referenced submodules, each under its own license — we orchestrate
@@ -26,9 +26,9 @@ and wrap, never patch:
 `.claude/skills/` are symlinks into those submodules' skills — reference, not
 copy. They are **generated, not tracked**: `link-skills.sh` creates a link for each
 *materialized* tool (skipping uninitialized submodules), because a tracked symlink
-into an uninitialized tool dangles and trips any tree-walking tool
-(`call/0005`). Run it after `git submodule update --init`. Tool *outputs* are
-project-owned (see `call/0001`).
+into an uninitialized tool dangles and trips any tree-walking tool.
+Run it after `git submodule update --init`. Tool *outputs* are
+project-owned.
 
 The *Where* room is the software under test — **one or more** components, each
 embedded as a **bare store with worktrees**: `<name>.git/` is the shared object
@@ -37,8 +37,8 @@ store, `<name>/` is the canonical worktree (the audited state, where CI runs), a
 These trees are local and gitignored; the host commits a recipe (`.host-software`)
 with **one `[software "<name>"]` stanza per component** (mirroring `.gitmodules`),
 each recording the source URL, the pinned canonical SHA, and the worktree set,
-which `host-lifecycle software --materialize` realises and `--check` audits
-(`call/0004`). The recorded pin replaces a submodule gitlink as the
+which `host-lifecycle software --materialize` realises and `--check` audits.
+The recorded pin replaces a submodule gitlink as the
 reproducibility anchor, so several branches stay materialized at once where a
 single submodule tree could not.
 
@@ -52,7 +52,7 @@ To publish docs with mdBook, run **`host-lifecycle book .`** — the canonical
 publisher, so you do not hand-roll a generator that drops a room or re-derives the
 src-scoping wrong. It writes a `book.toml` scoped to a generated `docs/` (never
 `src = "."`, which would walk the tool submodules and the un-materialized software
-worktree and trip over whatever is not present; `call/0005`) and a `SUMMARY.md` in
+worktree and trip over whatever is not present) and a `SUMMARY.md` in
 **lifecycle order**: Cast (Who) → Plan + specs (What/When) → Software/Where (a stub
 read from `.host-software`) → Call (Why) → Reference/CLAUDE (How) → Memory. Then
 `host-lifecycle book --check .` fails the build unless every room with source

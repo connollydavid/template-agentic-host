@@ -1,11 +1,14 @@
 # Use Markdown decision records (MADR)
 
+*(Worked example — replace with your software's own decisions.)*
+
 - Status: accepted
+- Scope: example
 - Date: 2026-06-14
 
 ## Context and Problem Statement
 
-Architectural decisions for the agentic-host methodology need a durable, citable
+Architectural decisions about the software under development need a durable, citable
 home — separate from MEMORY.md (lessons learned, backward-looking) and PLAN.md
 (the milestone index). Without one, the reasoning behind a choice evaporates and
 gets re-litigated.
