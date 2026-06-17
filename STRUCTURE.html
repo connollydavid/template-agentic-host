@@ -230,7 +230,9 @@ generated output (gitignored); the reference Site workflow under
 <code>.github/workflows/</code> runs both before <code>mdbook build</code>.</p>
 <p>A migrated or instantiated repo carries a <code>.host</code> stamp at its root
 recording the template revision it adopted (<code>template</code>/<code>revision</code>/<code>adopted</code>),
-written by <code>host-lifecycle adopt</code>. It is what a later upgrade diffs from.</p>
+written by <code>host-lifecycle adopt</code>. It is what a later upgrade diffs from. An
+optional <code>name</code> line pins the published book's title, so <code>host-lifecycle book</code>
+does not derive it from the checkout directory.</p>
 <p>The methodology lives in <code>CLAUDE.md</code> — read it first. The whole template is
 released into the public domain (Unlicense); see <code>README.md</code> for provenance.</p>
 
