@@ -390,6 +390,23 @@ otherwise it must tolerate the absence. <code>host-lifecycle software --check</c
 tracked symlink whose target is not itself tracked here as a <code>HAZARD</code>. And: an
 un-materialized CI job must exercise each runtime-critical artifact — "done" means
 the whole CI sweep is green, not one artifact built.</p>
+<p><strong>Reproducible builds — the production anchor.</strong> Software <em>initiated</em> under the
+methodology has <strong>reproducible builds</strong>: its deployed artifact MUST be byte-reproducible
+from the pinned source plus a recorded build recipe (a pinned <code>toolchain</code> and <code>build</code>
+command in <code>.host-software</code>). That is what makes the pin a true production anchor — a
+clean rebuild from the pin equals what is deployed — rather than just a source pin.
+Record per component which line ships (<code>deploy</code>) and the artifact's expected hash
+(<code>artifact = &lt;path&gt; &lt;sha256&gt;</code>); <code>host-lifecycle software --check</code> attests these cheaply,
+and a CI job runs <code>host-lifecycle software --verify-build</code> to rebuild from the pin and
+fail unless the artifact reproduces. For <strong>greenfield</strong> software, non-reproducibility is
+a defect designed out from the start.</p>
+<p><strong>Escape clause (migrated software only).</strong> Pre-existing software brought under the
+methodology may not be reproducible yet. It may carry <code>repro-exempt = call/NNNN</code> citing a
+recorded <strong>case decision</strong> — a software-scoped <code>call/</code> decision documenting why it is not
+yet reproducible and the interim provenance. <code>--verify-build</code> then warns and skips the
+rebuild comparison; <code>--check</code> still requires the citation to resolve. The exemption is
+meant to be retired as the component converges on reproducibility, and is <strong>never</strong>
+available to greenfield software.</p>
 <h2 id="upgrading"><a class="header" href="#upgrading">Upgrading</a></h2>
 <p>Adopting is one event; the template moves on. To <strong>upgrade</strong>, re-apply the spine
 changes across the revision span <em>and</em> the structural migrations it introduced

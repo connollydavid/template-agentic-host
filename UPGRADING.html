@@ -213,6 +213,10 @@ requires = host-lifecycle v0.7.0</p>
 title    = book publisher v0.7.1: nested specs + retired-decision Archive
 action   = Bump your pinned <code>host-lifecycle book</code> revision to v0.7.1. Two rendering changes follow on the next build: specs nested in <code>spec/&lt;topic&gt;/</code> now render (previously dropped), and decisions whose MADR <code>Status:</code> is superseded/deprecated/rejected move into a trailing "Archive / Record" section (banner + nav-label suffix) instead of shipping as current chapters. The record signal is <code>Status:</code> only — <code>.host-lintignore</code> does not affect the book.
 requires = host-lifecycle v0.7.1</p>
+<p>[upgrade "e3b174d"]
+title    = Reproducible builds are the production anchor
+action   = Record build provenance in <code>.host-software</code> per component: <code>build</code> + <code>toolchain</code> (the deterministic recipe), <code>deploy</code> (which line ships), and <code>artifact = &lt;worktree-path&gt; &lt;sha256&gt;</code>. Add a CI job that runs <code>host-lifecycle software --verify-build</code> (rebuild from the pin; fail unless the artifact reproduces) — see the reference <code>.github/workflows/reproducible-build.yml</code>. Software initiated under the methodology must reproduce. Pre-existing software not yet reproducible may carry <code>repro-exempt = call/NNNN</code> citing a software-scoped case decision; the exemption is retired as it converges and is never available to greenfield software.
+requires = host-lifecycle v0.8.0</p>
 
                     </main>
 
