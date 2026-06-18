@@ -179,7 +179,7 @@ work; the software under development is the <em>action</em>, hosted beneath it. 
 rooms map to the five W's.</p>
 <div class="table-wrapper"><table><thead><tr><th>W</th><th>room</th><th>holds</th></tr></thead><tbody>
 <tr><td>Who</td><td><code>cast/</code></td><td>personas (Powell, Keenan &amp; McDaid 2007) — examples Mara + Wren</td></tr>
-<tr><td>What</td><td><code>plan/NNNN-*/spec/</code></td><td>behavioural (<code>.allium</code>) + temporal (<code>.tla/</code>) specs</td></tr>
+<tr><td>What</td><td><code>&lt;software&gt;/</code> (with the code)</td><td>behavioural (<code>.allium</code>) + temporal (<code>.tla</code>) specs, verified in the software's CI; the host <code>plan/</code> references them</td></tr>
 <tr><td>When</td><td><code>plan/</code></td><td>the milestone index and folders</td></tr>
 <tr><td>Where</td><td><code>&lt;software&gt;/</code></td><td>the hosted software — a bare store with worktrees; you add it</td></tr>
 <tr><td>Why</td><td><code>call/</code></td><td>decisions about the software (MADR; see <code>call/0000</code>) — methodology lives in the spine, not here</td></tr>
@@ -230,8 +230,9 @@ publisher, so you do not hand-roll a generator that drops a room or re-derives t
 src-scoping wrong. It writes a <code>book.toml</code> scoped to a generated <code>docs/</code> (never
 <code>src = "."</code>, which would walk the tool submodules and the un-materialized software
 worktree and trip over whatever is not present) and a <code>SUMMARY.md</code> in
-<strong>lifecycle order</strong>: Cast (Who) → Plan + specs (What/When) → Software/Where (a stub
-read from <code>.host-software</code>) → Call (Why) → Reference/CLAUDE (How) → Memory. Then
+<strong>lifecycle order</strong>: Cast (Who) → Plan (When) → Software/Where (the What specs live
+with the code, read as a stub from <code>.host-software</code>) → Call (Why) →
+Reference/CLAUDE (How) → Memory. Then
 <code>host-lifecycle book --check .</code> fails the build unless every room with source
 renders a page, so a half-room site cannot ship. <code>book.toml</code> and <code>docs/</code> are
 generated output (gitignored); the reference Site workflow under

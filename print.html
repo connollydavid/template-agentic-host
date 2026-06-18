@@ -397,7 +397,7 @@ structure below stays the same.</p>
 Put each kind of file in its room. Do not invent new top-level folders.</p>
 <div class="table-wrapper"><table><thead><tr><th>Question</th><th>Room</th><th>What goes here</th></tr></thead><tbody>
 <tr><td>Who</td><td><code>cast/</code></td><td>personas — the people (human or agent) the software serves</td></tr>
-<tr><td>What</td><td><code>plan/&lt;milestone&gt;/spec/</code></td><td>specifications: behaviour (<code>.allium</code>), timing (<code>.tla</code>)</td></tr>
+<tr><td>What</td><td><code>&lt;software&gt;/</code> (with the code)</td><td>specifications: behaviour (<code>.allium</code>), timing (<code>.tla</code>), verified in the software's own CI</td></tr>
 <tr><td>When</td><td><code>plan/</code></td><td>the milestone index and one folder per milestone</td></tr>
 <tr><td>Where</td><td><code>&lt;software&gt;/</code></td><td>the hosted software — a bare store with worktrees; you add it</td></tr>
 <tr><td>Why</td><td><code>call/</code></td><td>decisions, in MADR format (see <code>call/0000</code>)</td></tr>
@@ -496,14 +496,23 @@ worked example; replace it with your software's own decisions.</p>
 management repo's <strong>top-level instance contents</strong> — its <code>call/</code>, <code>plan/</code>,
 <code>MEMORY.md</code>, the project-specific parts of its <code>CLAUDE.md</code> — are that project's own
 rooms and bind no adopter. Do not read them as normative.</p>
-<h2 id="specs--planmilestonespec"><a class="header" href="#specs--planmilestonespec">Specs — <code>plan/&lt;milestone&gt;/spec/</code></a></h2>
-<p>Each milestone carries its specifications in its own <code>spec/</code> folder:</p>
+<h2 id="specs--with-the-software-they-constrain"><a class="header" href="#specs--with-the-software-they-constrain">Specs — with the software they constrain</a></h2>
+<p>A spec states what the software must do; a tool turns it into a check. Specs live
+<strong>with the software they describe</strong> — in the software repo, beside the code, and
+verified by <strong>that repo's CI</strong> — the way tests live next to code, so a spec and the
+code it constrains move, version, and break together:</p>
 <ul>
 <li>Behaviour and requirements as <code>.allium</code> files — checked by <code>tools/allium</code>
-(property-based testing).</li>
-<li>Timing and concurrency as <code>.tla</code> files — checked by <code>tools/specula</code> (TLA+).</li>
+(<code>allium check</code> validates structure; <code>allium analyse</code> adds data-flow,
+reachability, terminal-state and deadlock analysis). The software's CI runs both
+and fails on any error or warning.</li>
+<li>Timing and concurrency as <code>.tla</code> files — checked by <code>tools/specula</code> (TLA+/TLC),
+run by the software's CI.</li>
 </ul>
-<p>A spec states what the software must do; the tools turn it into a check.</p>
+<p>The host's <code>plan/&lt;milestone&gt;/</code> <em>references</em> a spec (by path and the software pin);
+it does not contain it. Do not place specs in the host's <code>plan/</code> tree — quarantining
+a spec from its software is a bad smell (the spec drifts from the code). A spec that
+ended up under <code>plan/*/spec/</code> is relocated into the software repo.</p>
 <h2 id="personas--cast"><a class="header" href="#personas--cast">Personas — <code>cast/</code></a></h2>
 <p><code>cast/</code> holds the personas: short profiles of the people the software serves. A
 persona is a hypothetical archetypal user, not a real individual. The examples
@@ -655,7 +664,7 @@ work; the software under development is the <em>action</em>, hosted beneath it. 
 rooms map to the five W's.</p>
 <div class="table-wrapper"><table><thead><tr><th>W</th><th>room</th><th>holds</th></tr></thead><tbody>
 <tr><td>Who</td><td><code>cast/</code></td><td>personas (Powell, Keenan &amp; McDaid 2007) — examples Mara + Wren</td></tr>
-<tr><td>What</td><td><code>plan/NNNN-*/spec/</code></td><td>behavioural (<code>.allium</code>) + temporal (<code>.tla/</code>) specs</td></tr>
+<tr><td>What</td><td><code>&lt;software&gt;/</code> (with the code)</td><td>behavioural (<code>.allium</code>) + temporal (<code>.tla</code>) specs, verified in the software's CI; the host <code>plan/</code> references them</td></tr>
 <tr><td>When</td><td><code>plan/</code></td><td>the milestone index and folders</td></tr>
 <tr><td>Where</td><td><code>&lt;software&gt;/</code></td><td>the hosted software — a bare store with worktrees; you add it</td></tr>
 <tr><td>Why</td><td><code>call/</code></td><td>decisions about the software (MADR; see <code>call/0000</code>) — methodology lives in the spine, not here</td></tr>
@@ -706,8 +715,9 @@ publisher, so you do not hand-roll a generator that drops a room or re-derives t
 src-scoping wrong. It writes a <code>book.toml</code> scoped to a generated <code>docs/</code> (never
 <code>src = "."</code>, which would walk the tool submodules and the un-materialized software
 worktree and trip over whatever is not present) and a <code>SUMMARY.md</code> in
-<strong>lifecycle order</strong>: Cast (Who) → Plan + specs (What/When) → Software/Where (a stub
-read from <code>.host-software</code>) → Call (Why) → Reference/CLAUDE (How) → Memory. Then
+<strong>lifecycle order</strong>: Cast (Who) → Plan (When) → Software/Where (the What specs live
+with the code, read as a stub from <code>.host-software</code>) → Call (Why) →
+Reference/CLAUDE (How) → Memory. Then
 <code>host-lifecycle book --check .</code> fails the build unless every room with source
 renders a page, so a half-room site cannot ship. <code>book.toml</code> and <code>docs/</code> are
 generated output (gitignored); the reference Site workflow under
@@ -770,6 +780,10 @@ requires = host-lifecycle v0.9.0</p>
 <p>[upgrade "d3dc5ed"]
 title    = --check artifact mismatch is a note, not a failure
 action   = Bump your pinned <code>host-lifecycle</code> revision to v0.9.1. <code>software --check</code> no longer hard-fails when a present artifact's hash differs from the recorded canonical hash (a local-toolchain build legitimately differs) — it prints a <code>note</code> instead, the way <code>--install-hooks</code> already does. A match still reports <code>verified</code>; <code>--verify-build</code> (the container/CI lane) remains the reproducibility proof. No recipe change is required; this only removes a dev-box false failure.
+requires = host-lifecycle v0.9.1</p>
+<p>[upgrade "b6232a5"]
+title    = Specs live with the software, not the host plan tree
+action   = Move any behaviour (.allium) or timing (.tla) specs out of the host's <code>plan/&lt;milestone&gt;/spec/</code> and into the software repo, beside the code they constrain. Add the verification lane to the <em>software's</em> CI, not the host's: allium gated with both <code>allium check</code> and <code>allium analyse</code> (install <code>allium-cli@3.4.2</code>; both exit non-zero on any error or warning), and specula/TLC (<code>tla2tools v1.8.0</code> on a Temurin <code>21</code> JDK). Remove the host's spec copies and its specula workflow; leave a forward note in the affected milestone. The host <code>plan/&lt;milestone&gt;/</code> now references a spec by path and software pin rather than containing it.
 requires = host-lifecycle v0.9.1</p>
 
                     </main>
