@@ -201,7 +201,9 @@ copy. They are <strong>generated, not tracked</strong>: <code>link-skills.sh</co
 <em>materialized</em> tool (skipping uninitialized submodules), because a tracked symlink
 into an uninitialized tool dangles and trips any tree-walking tool.
 Run it after <code>git submodule update --init</code>. Tool <em>outputs</em> are
-project-owned.</p>
+project-owned. host-lifecycle ships one skill <strong>per lifecycle phase</strong> (classify,
+adopt, embed, remap, verify, publish, upgrade); unlike a lane, the phases are
+<strong>unconditional</strong> — every project is operated through them, no opt-out (<code>CLAUDE.md</code>).</p>
 <p>The <em>Where</em> room is the software under test — <strong>one or more</strong> components, each
 embedded as a <strong>bare store with worktrees</strong>: <code>&lt;name&gt;.git/</code> is the shared object
 store, <code>&lt;name&gt;/</code> is the canonical worktree (the audited state, where CI runs), and

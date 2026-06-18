@@ -241,6 +241,10 @@ requires = host-lifecycle v0.10.0</p>
 title    = Allium plan obligations must be dispositioned per component
 action   = For each <code>.allium</code>, add a sibling <code>&lt;spec&gt;.obligations</code> manifest that dispositions every obligation <code>allium plan</code> derives — <code>test:&lt;name&gt;</code> (a named test discharges it), <code>structural</code> (the check/analyse lane covers it), or <code>waived: &lt;reason&gt;</code>. Run <code>host-lifecycle obligations &lt;spec&gt; --tests &lt;dir&gt;</code> in the software's CI (it fails on any undispositioned/stale obligation or absent test ref). Bump host-lifecycle to v0.11.1, where <code>software --check</code> also HAZARDs a <code>.allium</code> with no <code>.obligations</code> manifest.
 requires = host-lifecycle v0.11.1</p>
+<p>[upgrade "f62d766"]
+title    = Lifecycle phases are an unconditional MUST, driven by host-lifecycle skills
+action   = Bump tools/host-lifecycle and run link-skills.sh so the phase skills (classify, adopt, embed, remap, verify, publish, upgrade) appear under .claude/skills/ alongside the allium/specula skills. Operate the methodology through these phases and their commands — scaffolding, embedding, migration, verification, publishing and upgrading — not ad-hoc. Unlike a verification lane, this is unconditional: there is no opt-out, and hand-operating any phase is a defect.
+requires = host-lifecycle v0.11.1</p>
 
                     </main>
 

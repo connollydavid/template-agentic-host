@@ -387,6 +387,20 @@ pin.</li>
 <p>Because the generator and the checker share <code>host-grammar</code>, what host-lifecycle
 emits is exactly what host-lint accepts. Trust that symmetry; do not number by
 hand.</p>
+<h3 id="the-lifecycle-phases--mandatory-no-opt-out"><a class="header" href="#the-lifecycle-phases--mandatory-no-opt-out">The lifecycle phases — mandatory, no opt-out</a></h3>
+<p>host-lifecycle ships one Claude <strong>skill per lifecycle phase</strong>, generated into
+<code>.claude/skills/</code> by <code>link-skills.sh</code> exactly as the allium/specula skills are:
+<strong>classify</strong> (preview + case), <strong>adopt</strong> (governance + rooms + stamp), <strong>embed</strong>
+(the software as a bare store with worktrees), <strong>remap</strong> (the dictionary rename),
+<strong>verify</strong> (the gate sweep — <code>validate</code>, <code>software --check</code>, <code>obligations</code>,
+<code>book --check</code>), <strong>publish</strong> (the doc site), <strong>upgrade</strong> (the ledger). Each owns
+the judgment around its mechanical command.</p>
+<p>Unlike a verification lane, which is conditional (required only once a spec of its
+kind exists), the lifecycle phases are <strong>unconditional</strong>: every agentic project is
+scaffolded, embedded, migrated, verified, published and upgraded through them. You
+<strong>MUST</strong> drive each phase through its skill and command — <strong>there is no opt-out</strong>.
+Operating the methodology ad-hoc (hand-scaffolding rooms, hand-renaming files,
+hand-rolling the site, eyeballing an upgrade diff) is a defect.</p>
 <h2 id="audited-plans-and-append-only-memory"><a class="header" href="#audited-plans-and-append-only-memory">Audited plans and append-only memory</a></h2>
 <p>Two disciplines keep the host trustworthy across sessions.</p>
 <ul>
