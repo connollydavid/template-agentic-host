@@ -301,6 +301,15 @@ Never push a host commit whose tool pointer or software pin is not yet pushed. I
 a push fails (no network, no auth), stop, tell the human which commits are
 unpushed, and do not start work that depends on them.
 
+**Tag every release.** A version bump — a change to the `version` in a tool's or
+the software's manifest (`Cargo.toml`, …) — **MUST** be accompanied by a matching
+annotated git tag `vX.Y.Z` at the release commit, pushed alongside it (`git tag -a
+vX.Y.Z -m "<name> vX.Y.Z" && git push origin vX.Y.Z`). The tag **is** the release:
+a tag-triggered CI job builds the artifacts from it (e.g. a `v*` release workflow).
+An untagged version bump is an unreleased version — a defect; back-fill the tag at
+its bump commit. Do not re-pin `.host-software` (or a tool pointer) to a
+version-bumped commit that carries no matching tag.
+
 **Worktree-absence coherence.** A separately-materialized path — the
 software worktree, or a tool submodule — is absent (or empty) until materialized; a
 fresh clone, CI, and a partial submodule init do not have it. So **do not git-track
