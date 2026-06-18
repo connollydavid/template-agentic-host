@@ -400,6 +400,14 @@ Record per component which line ships (<code>deploy</code>) and the artifact's e
 and a CI job runs <code>host-lifecycle software --verify-build</code> to rebuild from the pin and
 fail unless the artifact reproduces. For <strong>greenfield</strong> software, non-reproducibility is
 a defect designed out from the start.</p>
+<p><strong>Multi-platform builds.</strong> A component whose <em>one</em> source pin ships on several platforms
+records one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its
+<code>[software "&lt;name&gt;"]</code> stanza, each carrying its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code>
+(and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS — <code>linux</code>, <code>windows</code>,
+<code>macos</code> — that reproduces it. <code>--check</code> and <code>--verify-build</code> iterate the builds and attest
+each only on its <code>attest-host</code>, skipping a build whose host is not the current one rather
+than failing (a Linux runner cannot reproduce the Windows artifact, and is not asked to).
+The flat single-build fields remain the form for a single-platform component.</p>
 <p><strong>Escape clause (migrated software only).</strong> Pre-existing software brought under the
 methodology may not be reproducible yet. It may carry <code>repro-exempt = call/NNNN</code> citing a
 recorded <strong>case decision</strong> — a software-scoped <code>call/</code> decision documenting why it is not

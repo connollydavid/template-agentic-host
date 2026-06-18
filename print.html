@@ -604,6 +604,14 @@ Record per component which line ships (<code>deploy</code>) and the artifact's e
 and a CI job runs <code>host-lifecycle software --verify-build</code> to rebuild from the pin and
 fail unless the artifact reproduces. For <strong>greenfield</strong> software, non-reproducibility is
 a defect designed out from the start.</p>
+<p><strong>Multi-platform builds.</strong> A component whose <em>one</em> source pin ships on several platforms
+records one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its
+<code>[software "&lt;name&gt;"]</code> stanza, each carrying its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code>
+(and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS — <code>linux</code>, <code>windows</code>,
+<code>macos</code> — that reproduces it. <code>--check</code> and <code>--verify-build</code> iterate the builds and attest
+each only on its <code>attest-host</code>, skipping a build whose host is not the current one rather
+than failing (a Linux runner cannot reproduce the Windows artifact, and is not asked to).
+The flat single-build fields remain the form for a single-platform component.</p>
 <p><strong>Escape clause (migrated software only).</strong> Pre-existing software brought under the
 methodology may not be reproducible yet. It may carry <code>repro-exempt = call/NNNN</code> citing a
 recorded <strong>case decision</strong> — a software-scoped <code>call/</code> decision documenting why it is not
@@ -679,7 +687,11 @@ single submodule tree could not. Software initiated under the methodology has
 <strong>reproducible builds</strong> — the stanza also records the <code>build</code>/<code>toolchain</code> recipe and
 the deployed <code>artifact</code> hash, so <code>host-lifecycle software --verify-build</code> can rebuild
 from the pin and prove the deployed binary; migrated software not yet reproducible
-carries a <code>repro-exempt = call/NNNN</code> case decision (see <code>CLAUDE.md</code>).</p>
+carries a <code>repro-exempt = call/NNNN</code> case decision (see <code>CLAUDE.md</code>). A component that
+ships on several platforms records one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per
+platform (each a distinct toolchain/artifact of the <em>same</em> pin, with an <code>attest-host</code>
+naming the OS that reproduces it); the flat single-build form stays valid for the
+single-platform case.</p>
 <p>To instantiate: clone, <code>git submodule update --init</code> (the tools), run
 <code>./link-skills.sh</code> (regenerate the skill symlinks for the tools you initialized),
 replace the <code>cast/</code> examples with your own personas, and set up your software as a
@@ -747,6 +759,10 @@ requires = host-lifecycle v0.7.1</p>
 title    = Reproducible builds are the production anchor
 action   = Record build provenance in <code>.host-software</code> per component: <code>build</code> + <code>toolchain</code> (the deterministic recipe), <code>deploy</code> (which line ships), and <code>artifact = &lt;worktree-path&gt; &lt;sha256&gt;</code>. Add a CI job that runs <code>host-lifecycle software --verify-build</code> (rebuild from the pin; fail unless the artifact reproduces) — see the reference <code>.github/workflows/reproducible-build.yml</code>. Software initiated under the methodology must reproduce. Pre-existing software not yet reproducible may carry <code>repro-exempt = call/NNNN</code> citing a software-scoped case decision; the exemption is retired as it converges and is never available to greenfield software.
 requires = host-lifecycle v0.8.0</p>
+<p>[upgrade "c137567"]
+title    = Per-platform builds for multi-platform software
+action   = For a component whose one source pin ships on several platforms, replace the flat single-build fields with one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its <code>[software "&lt;name&gt;"]</code> stanza — each with its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code> (and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS (<code>linux</code>/<code>windows</code>/<code>macos</code>) that reproduces it. <code>host-lifecycle software --check</code>/<code>--verify-build</code> then attest each build only on its <code>attest-host</code>, skipping foreign-host builds rather than failing. Single-platform components need no change: the flat form stays valid.
+requires = host-lifecycle v0.9.0</p>
 
                     </main>
 

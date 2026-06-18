@@ -217,6 +217,10 @@ requires = host-lifecycle v0.7.1</p>
 title    = Reproducible builds are the production anchor
 action   = Record build provenance in <code>.host-software</code> per component: <code>build</code> + <code>toolchain</code> (the deterministic recipe), <code>deploy</code> (which line ships), and <code>artifact = &lt;worktree-path&gt; &lt;sha256&gt;</code>. Add a CI job that runs <code>host-lifecycle software --verify-build</code> (rebuild from the pin; fail unless the artifact reproduces) — see the reference <code>.github/workflows/reproducible-build.yml</code>. Software initiated under the methodology must reproduce. Pre-existing software not yet reproducible may carry <code>repro-exempt = call/NNNN</code> citing a software-scoped case decision; the exemption is retired as it converges and is never available to greenfield software.
 requires = host-lifecycle v0.8.0</p>
+<p>[upgrade "c137567"]
+title    = Per-platform builds for multi-platform software
+action   = For a component whose one source pin ships on several platforms, replace the flat single-build fields with one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its <code>[software "&lt;name&gt;"]</code> stanza — each with its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code> (and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS (<code>linux</code>/<code>windows</code>/<code>macos</code>) that reproduces it. <code>host-lifecycle software --check</code>/<code>--verify-build</code> then attest each build only on its <code>attest-host</code>, skipping foreign-host builds rather than failing. Single-platform components need no change: the flat form stays valid.
+requires = host-lifecycle v0.9.0</p>
 
                     </main>
 
