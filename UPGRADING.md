@@ -72,3 +72,8 @@ keyed by the template revision at which its action became required.
     title    = Verification lanes are mandatory when a spec of their kind exists
     action   = Wire the lane tools you use as submodules and generate their skills (gitignored) with `link-skills.sh`: `tools/allium` (+ its elicit/distill/tend/weed/propagate skills) for any `.allium`, `tools/specula` for any `.tla`. Author and maintain `.allium` specs THROUGH the skills, not by hand. In the *software* repo's CI, gate each `.allium` with `allium check` + `allium analyse` + `allium plan` (install `allium-cli@3.4.2`; both check and analyse exit non-zero on any error or warning) and discharge the `plan` test obligations with the suite; TLC-check each `.tla` (`tla2tools v1.8.0` on Temurin `21`). The lane is conditional — TLA+ stays optional until a `.tla` exists, allium until a `.allium` exists — but a spec present without its full lane is a defect, not a choice. Do not treat the lanes as reference decoration.
     requires = host-lifecycle v0.9.1
+
+[upgrade "b8c54fc"]
+    title    = The spec-lane MUST is enforced by software --check
+    action   = Bump your pinned host-lifecycle to v0.10.0. `host-lifecycle software --check` now raises a HAZARD when a materialized component carries a `.allium` spec with no CI workflow running `allium check` + `allium analyse`, or a `.tla` with no TLC lane (`tlc2.TLC`/`tla2tools`). Wire the missing lane (per the previous entry) so --check is clean; an un-materialized worktree is skipped.
+    requires = host-lifecycle v0.10.0
