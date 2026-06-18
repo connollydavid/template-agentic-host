@@ -62,3 +62,8 @@ keyed by the template revision at which its action became required.
     title    = --check artifact mismatch is a note, not a failure
     action   = Bump your pinned `host-lifecycle` revision to v0.9.1. `software --check` no longer hard-fails when a present artifact's hash differs from the recorded canonical hash (a local-toolchain build legitimately differs) — it prints a `note` instead, the way `--install-hooks` already does. A match still reports `verified`; `--verify-build` (the container/CI lane) remains the reproducibility proof. No recipe change is required; this only removes a dev-box false failure.
     requires = host-lifecycle v0.9.1
+
+[upgrade "b6232a5"]
+    title    = Specs live with the software, not the host plan tree
+    action   = Move any behaviour (.allium) or timing (.tla) specs out of the host's `plan/<milestone>/spec/` and into the software repo, beside the code they constrain. Add the verification lane to the *software's* CI, not the host's: allium gated with both `allium check` and `allium analyse` (install `allium-cli@3.4.2`; both exit non-zero on any error or warning), and specula/TLC (`tla2tools v1.8.0` on a Temurin `21` JDK). Remove the host's spec copies and its specula workflow; leave a forward note in the affected milestone. The host `plan/<milestone>/` now references a spec by path and software pin rather than containing it.
+    requires = host-lifecycle v0.9.1
