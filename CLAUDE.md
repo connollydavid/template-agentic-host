@@ -208,6 +208,17 @@ This is **enforced**, not only stated: `host-lifecycle software --check` raises 
 HAZARD when a materialized component carries a `.allium` with no `allium check` +
 `allium analyse` CI workflow, or a `.tla` with no TLC lane.
 
+**Obligations are discharged, not just emitted.** `allium plan` derives a test
+obligation for every config default, entity, enum, invariant, rule and transition.
+Each obligation MUST be **dispositioned** in a sibling `<spec>.obligations` manifest
+— the remap-dictionary discipline applied to tests — as `test:<name>` (a named test
+discharges it), `structural` (the spec's own `check`/`analyse` lane covers it), or
+`waived: <reason>` (an honest, recorded gap). `host-lifecycle obligations <spec>
+--tests <dir>` fails on any undispositioned obligation, any stale disposition, and
+any `test:<name>` absent from the test sources; the software's CI runs it, and
+`software --check` HAZARDs a `.allium` that has no `.obligations` manifest. An
+obligation left undispositioned is a defect — discharge is total, per component.
+
 Two rules govern the tools:
 
 - **Reference, don't vendor.** Each tool is a git submodule pinned to a commit.
