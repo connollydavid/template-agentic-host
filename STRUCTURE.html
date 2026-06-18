@@ -195,6 +195,7 @@ and wrap, never patch:</p>
 <li><code>tools/specula</code> (Apache-2.0) — timing and concurrency via TLA+.</li>
 </ul>
 <p>(<code>host-grammar</code>, the shared naming/numbering rules crate, is a build dependency of <code>host-lint</code> and <code>host-lifecycle</code> — not a host submodule.)</p>
+<p>A lane is <strong>mandatory once a spec of its kind exists</strong> (RFC-2119 MUST; see <code>CLAUDE.md</code>): a <code>.allium</code> requires <code>tools/allium</code> + its skills + a <code>check</code>/<code>analyse</code>/<code>plan</code> CI lane with the obligations discharged by tests; a <code>.tla</code> requires <code>tools/specula</code> + a TLC lane. Adopting a lane is optional; ignoring a present spec's lane is a defect.</p>
 <p><code>.claude/skills/</code> are symlinks into those submodules' skills — reference, not
 copy. They are <strong>generated, not tracked</strong>: <code>link-skills.sh</code> creates a link for each
 <em>materialized</em> tool (skipping uninitialized submodules), because a tracked symlink

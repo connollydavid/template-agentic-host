@@ -502,13 +502,17 @@ rooms and bind no adopter. Do not read them as normative.</p>
 verified by <strong>that repo's CI</strong> — the way tests live next to code, so a spec and the
 code it constrains move, version, and break together:</p>
 <ul>
-<li>Behaviour and requirements as <code>.allium</code> files — checked by <code>tools/allium</code>
-(<code>allium check</code> validates structure; <code>allium analyse</code> adds data-flow,
-reachability, terminal-state and deadlock analysis). The software's CI runs both
-and fails on any error or warning.</li>
+<li>Behaviour and requirements as <code>.allium</code> files — authored and maintained through
+the allium skills (<code>elicit</code>/<code>distill</code>/<code>tend</code>/<code>weed</code>/<code>propagate</code>), checked by
+<code>tools/allium</code> (<code>allium check</code> validates structure; <code>allium analyse</code> adds
+data-flow, reachability, terminal-state and deadlock analysis; <code>allium plan</code>
+derives the test obligations the suite must discharge). The software's CI runs
+<code>check</code> + <code>analyse</code> + <code>plan</code> and fails on any error or warning.</li>
 <li>Timing and concurrency as <code>.tla</code> files — checked by <code>tools/specula</code> (TLA+/TLC),
 run by the software's CI.</li>
 </ul>
+<p>A present spec carries its full lane (see "Mandatory when used", below) — wire the
+tool and its skills before authoring.</p>
 <p>The host's <code>plan/&lt;milestone&gt;/</code> <em>references</em> a spec (by path and the software pin);
 it does not contain it. Do not place specs in the host's <code>plan/</code> tree — quarantining
 a spec from its software is a bad smell (the spec drifts from the code). A spec that
@@ -528,11 +532,25 @@ each claim to the lane that can prove it.</p>
 <li><strong>Hygiene</strong> — <code>tools/host-lint</code>. Catches naming tells: ordinal labels and bare
 numerals leaking into commit messages, headers, and comments. Runs as a git
 hook.</li>
-<li><strong>Requirements</strong> — <code>tools/allium</code> (MIT, by JUXT). Property-based testing: does
-the software meet the behaviour the spec states?</li>
+<li><strong>Requirements</strong> — <code>tools/allium</code> (MIT, by JUXT). Does the software meet the
+behaviour the spec states? Author and maintain <code>.allium</code> specs <strong>through the
+allium skills</strong>, not by hand: <code>elicit</code>/<code>distill</code> to author, <code>tend</code> to evolve,
+<code>weed</code> to find spec↔code divergence, <code>propagate</code> to generate the tests. Gate
+each spec in the software's CI with <code>allium check</code> (structure) + <code>allium analyse</code> (data flow, reachability, terminal states, deadlock) + <code>allium plan</code>
+(test obligations).</li>
 <li><strong>Timing and concurrency</strong> — <code>tools/specula</code> (Apache-2.0). TLA+ model
-checking: are the orderings and timings correct?</li>
+checking: are the orderings and timings correct? Model-check each <code>.tla</code> with
+TLC in the software's CI.</li>
 </ol>
+<p><strong>Mandatory when used (RFC-2119).</strong> Adopting a lane is optional — not every
+project needs TLA+ — but <strong>once a spec of a kind exists, its tool, skills, and CI
+lane are required.</strong> A component carrying any <code>.allium</code> spec MUST wire <code>tools/allium</code>
+and its skills and run <code>check</code> + <code>analyse</code> + <code>plan</code> in that repo's CI, and the
+<code>plan</code> obligations MUST be discharged by the software's tests. A component carrying
+any <code>.tla</code> spec MUST wire <code>tools/specula</code> and TLC-check it in that repo's CI. A spec
+present without its full lane is a <strong>defect</strong>, not a choice — the lanes are not
+reference decoration. The tools are referenced submodules; their skills are
+generated, gitignored symlinks (<code>link-skills.sh</code>), wired before you author a spec.</p>
 <p>Two rules govern the tools:</p>
 <ul>
 <li><strong>Reference, don't vendor.</strong> Each tool is a git submodule pinned to a commit.
@@ -680,6 +698,7 @@ and wrap, never patch:</p>
 <li><code>tools/specula</code> (Apache-2.0) — timing and concurrency via TLA+.</li>
 </ul>
 <p>(<code>host-grammar</code>, the shared naming/numbering rules crate, is a build dependency of <code>host-lint</code> and <code>host-lifecycle</code> — not a host submodule.)</p>
+<p>A lane is <strong>mandatory once a spec of its kind exists</strong> (RFC-2119 MUST; see <code>CLAUDE.md</code>): a <code>.allium</code> requires <code>tools/allium</code> + its skills + a <code>check</code>/<code>analyse</code>/<code>plan</code> CI lane with the obligations discharged by tests; a <code>.tla</code> requires <code>tools/specula</code> + a TLC lane. Adopting a lane is optional; ignoring a present spec's lane is a defect.</p>
 <p><code>.claude/skills/</code> are symlinks into those submodules' skills — reference, not
 copy. They are <strong>generated, not tracked</strong>: <code>link-skills.sh</code> creates a link for each
 <em>materialized</em> tool (skipping uninitialized submodules), because a tracked symlink
@@ -784,6 +803,10 @@ requires = host-lifecycle v0.9.1</p>
 <p>[upgrade "b6232a5"]
 title    = Specs live with the software, not the host plan tree
 action   = Move any behaviour (.allium) or timing (.tla) specs out of the host's <code>plan/&lt;milestone&gt;/spec/</code> and into the software repo, beside the code they constrain. Add the verification lane to the <em>software's</em> CI, not the host's: allium gated with both <code>allium check</code> and <code>allium analyse</code> (install <code>allium-cli@3.4.2</code>; both exit non-zero on any error or warning), and specula/TLC (<code>tla2tools v1.8.0</code> on a Temurin <code>21</code> JDK). Remove the host's spec copies and its specula workflow; leave a forward note in the affected milestone. The host <code>plan/&lt;milestone&gt;/</code> now references a spec by path and software pin rather than containing it.
+requires = host-lifecycle v0.9.1</p>
+<p>[upgrade "c771d60"]
+title    = Verification lanes are mandatory when a spec of their kind exists
+action   = Wire the lane tools you use as submodules and generate their skills (gitignored) with <code>link-skills.sh</code>: <code>tools/allium</code> (+ its elicit/distill/tend/weed/propagate skills) for any <code>.allium</code>, <code>tools/specula</code> for any <code>.tla</code>. Author and maintain <code>.allium</code> specs THROUGH the skills, not by hand. In the <em>software</em> repo's CI, gate each <code>.allium</code> with <code>allium check</code> + <code>allium analyse</code> + <code>allium plan</code> (install <code>allium-cli@3.4.2</code>; both check and analyse exit non-zero on any error or warning) and discharge the <code>plan</code> test obligations with the suite; TLC-check each <code>.tla</code> (<code>tla2tools v1.8.0</code> on Temurin <code>21</code>). The lane is conditional — TLA+ stays optional until a <code>.tla</code> exists, allium until a <code>.allium</code> exists — but a spec present without its full lane is a defect, not a choice. Do not treat the lanes as reference decoration.
 requires = host-lifecycle v0.9.1</p>
 
                     </main>

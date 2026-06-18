@@ -229,6 +229,10 @@ requires = host-lifecycle v0.9.1</p>
 title    = Specs live with the software, not the host plan tree
 action   = Move any behaviour (.allium) or timing (.tla) specs out of the host's <code>plan/&lt;milestone&gt;/spec/</code> and into the software repo, beside the code they constrain. Add the verification lane to the <em>software's</em> CI, not the host's: allium gated with both <code>allium check</code> and <code>allium analyse</code> (install <code>allium-cli@3.4.2</code>; both exit non-zero on any error or warning), and specula/TLC (<code>tla2tools v1.8.0</code> on a Temurin <code>21</code> JDK). Remove the host's spec copies and its specula workflow; leave a forward note in the affected milestone. The host <code>plan/&lt;milestone&gt;/</code> now references a spec by path and software pin rather than containing it.
 requires = host-lifecycle v0.9.1</p>
+<p>[upgrade "c771d60"]
+title    = Verification lanes are mandatory when a spec of their kind exists
+action   = Wire the lane tools you use as submodules and generate their skills (gitignored) with <code>link-skills.sh</code>: <code>tools/allium</code> (+ its elicit/distill/tend/weed/propagate skills) for any <code>.allium</code>, <code>tools/specula</code> for any <code>.tla</code>. Author and maintain <code>.allium</code> specs THROUGH the skills, not by hand. In the <em>software</em> repo's CI, gate each <code>.allium</code> with <code>allium check</code> + <code>allium analyse</code> + <code>allium plan</code> (install <code>allium-cli@3.4.2</code>; both check and analyse exit non-zero on any error or warning) and discharge the <code>plan</code> test obligations with the suite; TLC-check each <code>.tla</code> (<code>tla2tools v1.8.0</code> on Temurin <code>21</code>). The lane is conditional — TLA+ stays optional until a <code>.tla</code> exists, allium until a <code>.allium</code> exists — but a spec present without its full lane is a defect, not a choice. Do not treat the lanes as reference decoration.
+requires = host-lifecycle v0.9.1</p>
 
                     </main>
 
