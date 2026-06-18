@@ -221,6 +221,10 @@ requires = host-lifecycle v0.8.0</p>
 title    = Per-platform builds for multi-platform software
 action   = For a component whose one source pin ships on several platforms, replace the flat single-build fields with one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its <code>[software "&lt;name&gt;"]</code> stanza — each with its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code> (and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS (<code>linux</code>/<code>windows</code>/<code>macos</code>) that reproduces it. <code>host-lifecycle software --check</code>/<code>--verify-build</code> then attest each build only on its <code>attest-host</code>, skipping foreign-host builds rather than failing. Single-platform components need no change: the flat form stays valid.
 requires = host-lifecycle v0.9.0</p>
+<p>[upgrade "d3dc5ed"]
+title    = --check artifact mismatch is a note, not a failure
+action   = Bump your pinned <code>host-lifecycle</code> revision to v0.9.1. <code>software --check</code> no longer hard-fails when a present artifact's hash differs from the recorded canonical hash (a local-toolchain build legitimately differs) — it prints a <code>note</code> instead, the way <code>--install-hooks</code> already does. A match still reports <code>verified</code>; <code>--verify-build</code> (the container/CI lane) remains the reproducibility proof. No recipe change is required; this only removes a dev-box false failure.
+requires = host-lifecycle v0.9.1</p>
 
                     </main>
 

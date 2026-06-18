@@ -600,10 +600,14 @@ from the pinned source plus a recorded build recipe (a pinned <code>toolchain</c
 command in <code>.host-software</code>). That is what makes the pin a true production anchor — a
 clean rebuild from the pin equals what is deployed — rather than just a source pin.
 Record per component which line ships (<code>deploy</code>) and the artifact's expected hash
-(<code>artifact = &lt;path&gt; &lt;sha256&gt;</code>); <code>host-lifecycle software --check</code> attests these cheaply,
-and a CI job runs <code>host-lifecycle software --verify-build</code> to rebuild from the pin and
-fail unless the artifact reproduces. For <strong>greenfield</strong> software, non-reproducibility is
-a defect designed out from the start.</p>
+(<code>artifact = &lt;path&gt; &lt;sha256&gt;</code>); <code>host-lifecycle software --check</code> attests these cheaply
+(a present artifact that matches is <strong>verified</strong>; one built by a local toolchain that
+differs from the canonical hash is <strong>noted, not failed</strong> — the same reasoning
+<code>--install-hooks</code> uses, since the recorded hash is the pinned build host's output), and
+a CI job runs <code>host-lifecycle software --verify-build</code> to rebuild from the pin and fail
+unless the artifact reproduces. <code>--verify-build</code>, not <code>--check</code>, is the reproducibility
+proof. For <strong>greenfield</strong> software, non-reproducibility is a defect designed out from the
+start.</p>
 <p><strong>Multi-platform builds.</strong> A component whose <em>one</em> source pin ships on several platforms
 records one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its
 <code>[software "&lt;name&gt;"]</code> stanza, each carrying its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code>
@@ -763,6 +767,10 @@ requires = host-lifecycle v0.8.0</p>
 title    = Per-platform builds for multi-platform software
 action   = For a component whose one source pin ships on several platforms, replace the flat single-build fields with one <code>[build "&lt;name&gt;" "&lt;platform&gt;"]</code> subsection per platform under its <code>[software "&lt;name&gt;"]</code> stanza — each with its own <code>build</code>/<code>toolchain</code>/<code>artifact</code>/<code>deploy</code> (and optional <code>repro-exempt</code>) plus an <code>attest-host</code> naming the OS (<code>linux</code>/<code>windows</code>/<code>macos</code>) that reproduces it. <code>host-lifecycle software --check</code>/<code>--verify-build</code> then attest each build only on its <code>attest-host</code>, skipping foreign-host builds rather than failing. Single-platform components need no change: the flat form stays valid.
 requires = host-lifecycle v0.9.0</p>
+<p>[upgrade "d3dc5ed"]
+title    = --check artifact mismatch is a note, not a failure
+action   = Bump your pinned <code>host-lifecycle</code> revision to v0.9.1. <code>software --check</code> no longer hard-fails when a present artifact's hash differs from the recorded canonical hash (a local-toolchain build legitimately differs) — it prints a <code>note</code> instead, the way <code>--install-hooks</code> already does. A match still reports <code>verified</code>; <code>--verify-build</code> (the container/CI lane) remains the reproducibility proof. No recipe change is required; this only removes a dev-box false failure.
+requires = host-lifecycle v0.9.1</p>
 
                     </main>
 
