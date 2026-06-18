@@ -204,6 +204,9 @@ any `.tla` spec MUST wire `tools/specula` and TLC-check it in that repo's CI. A 
 present without its full lane is a **defect**, not a choice — the lanes are not
 reference decoration. The tools are referenced submodules; their skills are
 generated, gitignored symlinks (`link-skills.sh`), wired before you author a spec.
+This is **enforced**, not only stated: `host-lifecycle software --check` raises a
+HAZARD when a materialized component carries a `.allium` with no `allium check` +
+`allium analyse` CI workflow, or a `.tla` with no TLC lane.
 
 Two rules govern the tools:
 
