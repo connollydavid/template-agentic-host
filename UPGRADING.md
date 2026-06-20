@@ -124,3 +124,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.15.0
     depends  = b6232a5 c771d60
     verify   = host-lifecycle obligations 2>&1 | grep -q -- --prove
+
+[upgrade "a22704e"]
+    title    = Self-referential software is excluded from the hygiene lane, not bypassed
+    action   = Bump your pinned host-lifecycle to v0.15.1 (it fixes the first-upgrade breakage: `adopt` now registers the `host-template` submodule, the missing-template error remediates, and the `upgrade` skill matches the applied-set model). If your software detects the patterns the hygiene lane flags (a linter, parser, validator, grammar tool), it embeds them in test fixtures, docs and sometimes source — legitimate self-reference the git hook would block. Exclude that corpus through `.host-lintignore` (host-lint v0.4.1+ honors it in the per-file hook scan, not only the `--all` walk), validated file-by-file so no real tell hides among the examples; keep ordinary source scanned (reword an example comment rather than mute the file). Never `--no-verify` past the gate to land a fixture — that silently defeats the lane. Finally, keep the template's own `tools/host-lifecycle` pin at or above the maximum `requires` in this ledger, so the pinned tool can actually run the ledger it ships.
+    requires = host-lifecycle v0.15.1
+    independent = true
+    verify   = grep -rqs "Self-referential software is excluded" host-template/CLAUDE.md
