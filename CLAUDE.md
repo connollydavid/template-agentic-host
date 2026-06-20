@@ -191,6 +191,16 @@ lanes:
    (`.host-lintignore`), which the per-file hook scan MUST honor; validate each
    excluded file line-by-line so no real tell hides among the examples, and keep
    ordinary source scanned (reword an example comment rather than mute the file).
+   When a tracked *document* must instead reproduce a tell **verbatim** — an old-name
+   remap table, or a frozen dated review citing another document's numbered steps —
+   it is **boxed in the file, not path-excluded**: wrap it in a fenced code block
+   tagged `host-lint:ignore` (markdown only), and the naming scan skips that block
+   while the rest of the file stays linted — a regular code block and inline
+   backticks stay scanned, so a tell cannot be laundered by quoting it. The choice is
+   three-way: reword a pedagogical example or a document's own ordinal label into
+   content; box an irreducible literal citation; and path-exclude only the immutable
+   record (the append-only memory log, dated review artifacts) and the
+   self-referential corpus above.
    **Never `--no-verify` past the gate to land a fixture** — that silently defeats
    the lane, the same "let red hide" failure as a CI matrix that fail-fast-cancels
    its own jobs. (A fix to either, once found, is a behaviour change: ship it as a
