@@ -539,6 +539,16 @@ would otherwise flag. Exclude that corpus through the tool's ignore mechanism
 (<code>.host-lintignore</code>), which the per-file hook scan MUST honor; validate each
 excluded file line-by-line so no real tell hides among the examples, and keep
 ordinary source scanned (reword an example comment rather than mute the file).
+When a tracked <em>document</em> must instead reproduce a tell <strong>verbatim</strong> — an old-name
+remap table, or a frozen dated review citing another document's numbered steps —
+it is <strong>boxed in the file, not path-excluded</strong>: wrap it in a fenced code block
+tagged <code>host-lint:ignore</code> (markdown only), and the naming scan skips that block
+while the rest of the file stays linted — a regular code block and inline
+backticks stay scanned, so a tell cannot be laundered by quoting it. The choice is
+three-way: reword a pedagogical example or a document's own ordinal label into
+content; box an irreducible literal citation; and path-exclude only the immutable
+record (the append-only memory log, dated review artifacts) and the
+self-referential corpus above.
 <strong>Never <code>--no-verify</code> past the gate to land a fixture</strong> — that silently defeats
 the lane, the same "let red hide" failure as a CI matrix that fail-fast-cancels
 its own jobs. (A fix to either, once found, is a behaviour change: ship it as a
@@ -1023,6 +1033,12 @@ action   = Bump your pinned host-lifecycle to v0.18.1, host-lint to v0.6.0, and 
 requires = host-lifecycle v0.18.1
 depends  = 4a98d92
 verify   = grep -rqs "discharged by re-derivation" host-template/CLAUDE.md</p>
+<p>[upgrade "da000aa"]
+title    = Box irreducible literal citations in a host-lint:ignore fence
+action   = Bump your pinned host-lint to v0.7.0. The hygiene lane gains a per-block escape for a document that must reproduce a tell verbatim: a fenced code block tagged <code>host-lint:ignore</code> (markdown only) — its lines are skipped by the naming scan while the rest of the file stays linted, and a regular code block or inline backticks stay scanned so a tell cannot be laundered by quoting it. Reserve it for an irreducible literal citation (an old-name remap table, a frozen dated review citing another document's numbered steps); reword a pedagogical example or a document's own ordinal label into content, and path-exclude (<code>.host-lintignore</code>) only the immutable record (the append-only memory log, dated review artifacts) and the self-referential corpus. This loosens, never widens, the gate — it replaces blanket path-exclusion of editable docs with in-file, per-block, still-audited boxing.
+requires = host-lifecycle v0.18.1
+independent = true
+verify   = grep -rqs "boxed in the file, not path-excluded" host-template/CLAUDE.md</p>
 
                     </main>
 
