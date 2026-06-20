@@ -328,7 +328,17 @@ lanes:</p>
 <ol>
 <li><strong>Hygiene</strong> — <code>tools/host-lint</code>. Catches naming tells: ordinal labels and bare
 numerals leaking into commit messages, headers, and comments. Runs as a git
-hook.</li>
+hook. <strong>Self-referential software is excluded, not bypassed.</strong> Software that
+<em>detects</em> tells (a linter, parser, validator, grammar tool) must embed them in
+test fixtures, docs, and sometimes source — legitimate self-reference the hook
+would otherwise flag. Exclude that corpus through the tool's ignore mechanism
+(<code>.host-lintignore</code>), which the per-file hook scan MUST honor; validate each
+excluded file line-by-line so no real tell hides among the examples, and keep
+ordinary source scanned (reword an example comment rather than mute the file).
+<strong>Never <code>--no-verify</code> past the gate to land a fixture</strong> — that silently defeats
+the lane, the same "let red hide" failure as a CI matrix that fail-fast-cancels
+its own jobs. (A fix to either, once found, is a behaviour change: ship it as a
+patch release with a matching tag.)</li>
 <li><strong>Requirements</strong> — <code>tools/allium</code> (MIT, by JUXT). Does the software meet the
 behaviour the spec states? Author and maintain <code>.allium</code> specs <strong>through the
 allium skills</strong>, not by hand: <code>elicit</code>/<code>distill</code> to author, <code>tend</code> to evolve,
