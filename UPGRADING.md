@@ -152,3 +152,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.18.1
     independent = true
     verify   = grep -rqs "every phase emits a receipt" host-template/CLAUDE.md
+
+[upgrade "0cd6b0a"]
+    title    = The Where room uses the nested software/<name>/<branch> layout
+    action   = Bump your pinned host-lifecycle to v0.19.0. The Where room now materializes under `software/<name>/`: the bare store at `software/<name>/.git` and each worktree keyed by branch at `software/<name>/<branch>/` (the canonical worktree is the recorded `branch`, default `main`, checked out at the pin), replacing the old root-scattered `<name>/`, `<name>.git/`, `<name>.<line>/`. Migrate, in order: (1) replace the per-component `.gitignore` triplets with a single `/software/` entry; (2) remove the old root-scattered worktrees and bare stores (commit or stash any uncommitted parallel-worktree work first — re-materialize is destructive); (3) run `host-lifecycle software --materialize .` to realise the new tree; (4) re-run `link-skills.sh` and re-point any software skill link at `software/<name>/<branch>/`; then `host-lifecycle software --check .` must be clean. The `worktree =` recipe line drops its leading `<dir>` token (the path now derives from the branch: `worktree = <branch> <pin> [store=<path>] [host=<os>]`), `worktrees =` is a branch list, and an optional `branch =` sets a non-`main` canonical branch. Operate on one component (or one branch worktree) with `software --item <name>[@<branch>]`. `software --check` also HAZARDs a dangling generated skill link now. A development host that authors a host-* tool embeds it as its own Where component rather than referencing its own source as a submodule (the reference-don't-vendor carve-out).
+    requires = host-lifecycle v0.19.0
+    independent = true
+    verify   = grep -rqs "the producer of a tool embeds it" host-template/CLAUDE.md
