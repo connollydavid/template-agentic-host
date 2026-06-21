@@ -38,13 +38,18 @@ tool, and the rule is **every phase emits a receipt** (`done`/`skip`/`n-a` in
 `software --check` HAZARD (`CLAUDE.md`).
 
 The *Where* room is the software under test — **one or more** components, each
-embedded as a **bare store with worktrees**: `<name>.git/` is the shared object
-store, `<name>/` is the canonical worktree (the audited state, where CI runs), and
-`<name>.<line>/` are parallel worktrees — one per agent or live release branch.
-These trees are local and gitignored; the host commits a recipe (`.host-software`)
+embedded as a **bare store with worktrees** under `software/<name>/`: the shared
+object store is `software/<name>/.git`, and each worktree is keyed by branch at
+`software/<name>/<branch>/` (the branch keeps its slashes, so `feature/login`
+nests). The canonical worktree — the audited state, where CI runs — is the
+component's recorded `branch` (default `main`) checked out at the `pin`; the rest are
+parallel lines, one per agent or live release branch. These trees are local and
+gitignored (a single `/software/` entry); the host commits a recipe (`.host-software`)
 with **one `[software "<name>"]` stanza per component** (mirroring `.gitmodules`),
-each recording the source URL, the pinned canonical SHA, and the worktree set,
-which `host-lifecycle software --materialize` realises and `--check` audits.
+each recording the source URL, the pinned canonical SHA, the canonical `branch`, and
+any parallel-line branches, which `host-lifecycle software --materialize` realises
+and `--check` audits. Operate on a single component, or one branch worktree of it,
+with `--item <name>[@<branch>]`.
 The recorded pin replaces a submodule gitlink as the
 reproducibility anchor, so several branches stay materialized at once where a
 single submodule tree could not. Software initiated under the methodology has

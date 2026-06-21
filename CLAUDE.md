@@ -304,7 +304,13 @@ the re-deriver, and never bakes in a CI.
 Two rules govern the tools:
 
 - **Reference, don't vendor.** Each tool is a git submodule pinned to a commit.
-  Do not copy its code into this repository.
+  Do not copy its code into this repository. This governs an **adopter** consuming
+  the tools. A **development host** that *authors* a host-* tool is the exception:
+  it develops that tool as a Where-room software component of its own — materialized
+  and released through the lifecycle like any software it builds — and consumes the
+  built result (binary + worktree-sourced skills) from that worktree, rather than
+  referencing its own source as a foreign submodule. Reference is for the consumer;
+  the producer of a tool embeds it.
 - **Instruct, don't patch.** Drive the tools through this manual and their own
   interfaces. Do not edit a tool's source to make it fit. If a tool needs a
   change, raise it upstream.
@@ -438,9 +444,9 @@ tracked symlink whose target is not itself tracked here as a `HAZARD`. And: an
 un-materialized CI job must exercise each runtime-critical artifact — "done" means
 the whole CI sweep is green, not one artifact built.
 
-**Worktrees live under the host root.** Every materialized Where-room worktree
-**MUST** surface at a path *under* the host root — never a bare external path
-disjoint from the tree. The rule an agent relies on is: *if you build it, its
+**Worktrees live under `software/`.** Every materialized Where-room worktree
+**MUST** surface at `software/<name>/<branch>/` *under* the host root — never a bare
+external path disjoint from the tree. The rule an agent relies on is: *if you build it, its
 files live under the host root*, so an edit through the default-cwd path lands in
 the tree under test. When a backing store genuinely must live elsewhere — another
 filesystem or platform (e.g. a native-Windows build that cannot sit on a WSL
@@ -449,8 +455,8 @@ share) — record it on the parallel-worktree line as `store=<path>` (and option
 `host-lifecycle`, *not* the build platform; for a Windows Dev Drive reached from WSL
 that is `linux`, even though the build's own `attest-host` is `windows`). Off-platform,
 `host=` makes `--materialize`/`--check` skip the line rather than fail.
-`software --materialize` then realises the store at that path and the in-tree `<dir>`
-as a **symlink / directory junction / bind-mount** to it. `host-lifecycle software --check` **HAZARDs** any recorded worktree path that
+`software --materialize` then realises the store at that path and the in-tree
+`software/<name>/<branch>/` as a **symlink / directory junction / bind-mount** to it. `host-lifecycle software --check` **HAZARDs** any recorded worktree path that
 escapes the host root, and any `store=` line whose in-tree handle is missing or
 does not resolve to the store. A disjoint external worktree with no in-structure
 handle is the wrong-tree footgun — edits silently land in a tree not under test —
