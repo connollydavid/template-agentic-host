@@ -202,8 +202,11 @@ copy. They are <strong>generated, not tracked</strong>: <code>link-skills.sh</co
 into an uninitialized tool dangles and trips any tree-walking tool.
 Run it after <code>git submodule update --init</code>. Tool <em>outputs</em> are
 project-owned. host-lifecycle ships one skill <strong>per lifecycle phase</strong> (classify,
-adopt, embed, remap, verify, publish, upgrade); unlike a lane, the phases are
-<strong>unconditional</strong> — every project is operated through them, no opt-out (<code>CLAUDE.md</code>).</p>
+adopt, embed, remap, verify, publish, upgrade, release), enumerated once in the
+tool-readable <code>lifecycle.manifest</code>; unlike a lane, the lifecycle is driven by the
+tool, and the rule is <strong>every phase emits a receipt</strong> (<code>done</code>/<code>skip</code>/<code>n-a</code> in
+<code>.host-receipts</code>), not "every phase runs" — a phase with no receipt is a
+<code>software --check</code> HAZARD (<code>CLAUDE.md</code>).</p>
 <p>The <em>Where</em> room is the software under test — <strong>one or more</strong> components, each
 embedded as a <strong>bare store with worktrees</strong>: <code>&lt;name&gt;.git/</code> is the shared object
 store, <code>&lt;name&gt;/</code> is the canonical worktree (the audited state, where CI runs), and

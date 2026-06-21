@@ -466,20 +466,32 @@ pin.</li>
 <p>Because the generator and the checker share <code>host-grammar</code>, what host-lifecycle
 emits is exactly what host-lint accepts. Trust that symmetry; do not number by
 hand.</p>
-<h3 id="the-lifecycle-phases--mandatory-no-opt-out"><a class="header" href="#the-lifecycle-phases--mandatory-no-opt-out">The lifecycle phases — mandatory, no opt-out</a></h3>
+<h3 id="the-lifecycle-phases--every-phase-emits-a-receipt"><a class="header" href="#the-lifecycle-phases--every-phase-emits-a-receipt">The lifecycle phases — every phase emits a receipt</a></h3>
 <p>host-lifecycle ships one Claude <strong>skill per lifecycle phase</strong>, generated into
 <code>.claude/skills/</code> by <code>link-skills.sh</code> exactly as the allium/specula skills are:
 <strong>classify</strong> (preview + case), <strong>adopt</strong> (governance + rooms + stamp), <strong>embed</strong>
 (the software as a bare store with worktrees), <strong>remap</strong> (the dictionary rename),
 <strong>verify</strong> (the gate sweep — <code>validate</code>, <code>software --check</code>, <code>obligations</code>,
-<code>book --check</code>), <strong>publish</strong> (the doc site), <strong>upgrade</strong> (the ledger). Each owns
-the judgment around its mechanical command.</p>
-<p>Unlike a verification lane, which is conditional (required only once a spec of its
-kind exists), the lifecycle phases are <strong>unconditional</strong>: every agentic project is
-scaffolded, embedded, migrated, verified, published and upgraded through them. You
-<strong>MUST</strong> drive each phase through its skill and command — <strong>there is no opt-out</strong>.
-Operating the methodology ad-hoc (hand-scaffolding rooms, hand-renaming files,
-hand-rolling the site, eyeballing an upgrade diff) is a defect.</p>
+<code>book --check</code>), <strong>publish</strong> (the doc site), <strong>upgrade</strong> (the ledger), and
+<strong>release</strong> (the strict, tool-carried release — verify, build in the recorded
+toolchain, re-derive the artifact hash, re-pin, tag, receipt). Each owns the
+judgment around its mechanical command.</p>
+<p>The phases — their order, modality, command, and the evidence each carries — are
+not re-typed in prose; they live once in the tool-readable <strong><code>lifecycle.manifest</code></strong>
+(one <code>[phase "&lt;name&gt;"]</code> stanza each), which <code>host-lifecycle</code> reads at the project's
+adopted <code>.host</code> revision for <code>--next</code>, the <code>book</code> order, and the receipt gate. Read
+the whole lifecycle at a glance with <code>host-lifecycle manifest &lt;path&gt;</code>.</p>
+<p>Unlike a verification lane, which is conditional on a spec existing, the lifecycle
+is <strong>driven by the tool, never hand-operated</strong> — and the rule is <strong>every phase
+emits a receipt</strong>, not "every phase runs". Modality is first-class: a phase may be
+<strong>conditional</strong> (embed and release apply only with a Where room) or <strong>recurring</strong>
+(once per software component), so it can legitimately not run — but it still records
+a <strong>receipt</strong> in <code>.host-receipts</code>, written by the tool: <code>done</code> with re-derivable
+evidence, <code>skip</code> with a cited reason, or tool-computed <code>n-a</code>. <code>host-lifecycle software --check</code> re-verifies each <code>done</code> by the manifest's closed <code>recheck =</code> and
+<strong>HAZARDs a phase with no receipt</strong> — the one defect the gate needs; a protected
+core (<code>verify</code>, <code>skippable = false</code>) refuses a skip outright. Operating a phase
+ad-hoc (hand-scaffolding rooms, hand-renaming files, hand-rolling the site or a
+release) leaves no receipt, and so is a defect by construction.</p>
 <h3 id="never-adopt-a-software-repository-in-place"><a class="header" href="#never-adopt-a-software-repository-in-place">Never adopt a software repository in place</a></h3>
 <p>A host is a <em>separate meta-repo</em>; the software it governs lives beneath it as the
 <em>Where</em> room (a bare store with worktrees recorded in <code>.host-software</code>). The two
