@@ -159,3 +159,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.19.0
     independent = true
     verify   = grep -rqs "the producer of a tool embeds it" host-template/CLAUDE.md
+
+[upgrade "950fbd6"]
+    title    = Prose hygiene is an ongoing hygiene-lane rule with a receipt
+    action   = Treat the prose audit as a STANDING part of the hygiene lane, not a one-time pass. `host-lint --prose` (host-lint v0.7.0+) flags the LLM-slop prose tropes that tropes.fyi names (decoration dashes and arrows, tricolons, hypophora, and the rest) in authored docs. Clean every authored doc to ZERO prose tropes (reword to plain prose, the same bar as naming tells), then wire it into the receipts mechanism: the `verify` phase applies `host-lint --prose` and generates a receipt, and `host-lifecycle software --check` re-verifies that receipt by re-running `--prose` (add it to the `verify` phase `recheck =` in `lifecycle.manifest`), re-opening any regressed doc as a HAZARD. `MEMORY.md` is the agent's append-only working memory and is excepted from both the naming and prose audits via `.host-lintignore`, never rewritten.
+    requires = host-lifecycle v0.19.0
+    independent = true
+    verify   = grep -rqs "Prose hygiene is the same lane" host-template/CLAUDE.md
