@@ -216,6 +216,17 @@ lanes:
    tell (rename it, do not declare it), and an un-cited tracker reference (`#N`,
    `owner/repo#N`, or an opted-in `PROJ-NNNN` key); URL liveness is re-derived by a
    network-having lane, never the offline hook.
+
+   **Prose hygiene is the same lane, applied continuously.** Beyond naming tells,
+   `host-lint --prose` audits authored docs for the LLM-slop prose tropes that
+   tropes.fyi names (decoration dashes and arrows, tricolons, hypophora, and so on).
+   The bar matches the naming audit: authored docs carry **zero** prose tropes, as an
+   **ongoing** rule, not a one-time migration. It is wired into the **receipts
+   mechanism**: the `verify` phase **applies** the prose audit and **generates** a
+   receipt, and `software --check` re-verifies that receipt by re-running `host-lint
+   --prose`, so a doc that regresses to slop re-opens it as a HAZARD. The one exception
+   is `MEMORY.md`, the **agent's own append-only working memory**: it is excluded from
+   both the naming and prose audits via `.host-lintignore`, never rewritten.
 2. **Requirements** — `tools/allium` (MIT, by JUXT). Does the software meet the
    behaviour the spec states? Author and maintain `.allium` specs **through the
    allium skills**, not by hand: `elicit`/`distill` to author, `tend` to evolve,
