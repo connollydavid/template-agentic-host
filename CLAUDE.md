@@ -488,6 +488,23 @@ unless the artifact reproduces. `--verify-build`, not `--check`, is the reproduc
 proof. For **greenfield** software, non-reproducibility is a defect designed out from the
 start.
 
+**Hermetic builds, the dependency bundle.** Reproducibility and hermeticity are the same
+lane: a component that ships static or self-contained release binaries MUST be able to
+reproduce them offline from pinned inputs, never from whatever a network fetch returns at
+build time. The recommended mechanism is a reusable, versioned, hash-pinned **dependency
+bundle**: vendor the dependency layer once, publish it as a downloadable release (the pattern
+`pgs-release` uses for its prebuilt sysroot), and have every build download and verify that
+bundle and build with no network. Record it per component as `deps-bundle = <url> <sha256>`
+in `.host-software`. `host-lifecycle software --verify-build` and `release` then perform the
+one controlled, pinned download, verify the sha (the provenance half of the gate), stage the
+vendored sources, and build under `--network none` (the egress half). The gate invariant is
+specific and enforceable: a component recording a `deps-bundle` MUST build offline, its staged
+bundle sha MUST match the recorded one, and `software --check` HAZARDs a `deps-bundle` pin that
+has drifted from the producer's committed `deps-bundle.lock`. A component that genuinely cannot
+vendor offline, such as one with a network-fetching `build.rs` or a non-Rust toolchain, may
+carry `hermetic-exempt = call/NNNN` citing a software-scoped case decision, the same escape
+shape as `repro-exempt`; the exemption is never available where offline vendoring is feasible.
+
 **Multi-platform builds.** A component whose *one* source pin ships on several platforms
 records one `[build "<name>" "<platform>"]` subsection per platform under its
 `[software "<name>"]` stanza, each carrying its own `build`/`toolchain`/`artifact`/`deploy`
