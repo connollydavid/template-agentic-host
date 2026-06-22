@@ -166,3 +166,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.19.0
     independent = true
     verify   = grep -rqs "Prose hygiene is the same lane" host-template/CLAUDE.md
+
+[upgrade "ecce498"]
+    title    = Hermetic builds via a pinned dependency bundle
+    action   = Bump your pinned host-lifecycle to the v0.20.0 build that ships the `deps-bundle` recipe field and the offline `--network none` build. A component that ships static or self-contained release binaries MUST be able to reproduce them offline from pinned inputs, never from a network fetch at build time. Vendor the dependency layer once and publish it as a reusable, versioned, hash-pinned downloadable release bundle (the pattern `pgs-release` uses for its prebuilt sysroot), then record it per component as `deps-bundle = <url> <sha256>` in `.host-software`. `host-lifecycle software --verify-build` and `release` perform the one controlled, pinned download, verify the sha (provenance), stage the vendored sources, and build under `--network none` (egress). The producer commits a `deps-bundle.lock` as the single source of truth, and `software --check` HAZARDs a `deps-bundle` pin that has drifted from it. A component that genuinely cannot vendor offline (a network-fetching `build.rs`, a non-Rust toolchain) may carry `hermetic-exempt = call/NNNN` citing a software-scoped case decision, the same escape shape as `repro-exempt`; the exemption is never available where offline vendoring is feasible.
+    requires = host-lifecycle v0.20.0
+    independent = true
+    verify   = grep -rqs "reproduce them offline from pinned inputs" host-template/CLAUDE.md
