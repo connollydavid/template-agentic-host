@@ -227,6 +227,38 @@ lanes:
    --prose`, so a doc that regresses to slop re-opens it as a HAZARD. The one exception
    is `MEMORY.md`, the **agent's own append-only working memory**: it is excluded from
    both the naming and prose audits via `.host-lintignore`, never rewritten.
+
+   **The grammar is living, and grows by reflective practice.** The lane enforces a
+   shared corpus of tells, and that corpus is incomplete by nature: new tell-shapes
+   emerge in practice that no rule anticipated. Grow it on purpose rather than waiting
+   for it to miss. Discovery is **mechanical-first**: sweep the history and recent work
+   for a recurring shape the lane does not catch. An agent seldom perceives its own
+   register as a tell, so this reflection is **prompted**, at the verify gate before a
+   milestone closes and at adoption, and the agent assists rather than leads. **The
+   operator validates** whether a surfaced shape is a genuine tell or legitimate domain
+   vocabulary, by one test: is the shape a property of how models segment work, or of
+   this project's own domain? Authority over a grammar change rests with the operator;
+   an agent proposes a change and never approves one.
+
+   **A confirmed tell graduates into the shared grammar; legitimacy stays local.** The
+   two run in opposite directions because a tell is a property of machine register that
+   recurs across projects, while a legitimate token (a version string, a product
+   identifier, a cited tracker reference) belongs to one project. So a confirmed tell is
+   **proposed upstream** to the shared grammar the lane consumes, where every project
+   gains it on the next bump; the project that finds it does not edit that shared source
+   itself. A legitimate tell-shaped token stays in the per-project `LEXICON`. The host's
+   own maintainer validates universality and releases the graduation.
+
+   **Growth never inverts the disposition order, and it looks forward.** Reword a
+   positional or ordinal reference into content by default, since a content name is
+   almost always available; box or declare an irreducible citation; declare the
+   numeral-free contextual prefix when a shape is a genuine quantity; and reserve a
+   graduation for the residue that still recurs once rewording is impossible. Harvesting
+   at adoption proposes what to catch from then on, and leaves the immutable past alone,
+   which migration disposes of by renaming live files and boxing frozen records. When a
+   later grammar bump flags an existing **live** doc, reword it; a **frozen** record is
+   boxed. A graduation that proves to over-flag is narrowed by a later grammar release,
+   the same as any behaviour fix.
 2. **Requirements**: `tools/allium` (MIT, by JUXT). Does the software meet the
    behaviour the spec states? Author and maintain `.allium` specs **through the
    allium skills**, not by hand: `elicit`/`distill` to author, `tend` to evolve,
