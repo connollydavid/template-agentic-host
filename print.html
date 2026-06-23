@@ -574,6 +574,35 @@ mechanism</strong>: the <code>verify</code> phase <strong>applies</strong> the p
 receipt, and <code>software --check</code> re-verifies that receipt by re-running <code>host-lint --prose</code>, so a doc that regresses to slop re-opens it as a HAZARD. The one exception
 is <code>MEMORY.md</code>, the <strong>agent's own append-only working memory</strong>: it is excluded from
 both the naming and prose audits via <code>.host-lintignore</code>, never rewritten.</p>
+<p><strong>The grammar is living, and grows by reflective practice.</strong> The lane enforces a
+shared corpus of tells, and that corpus is incomplete by nature: new tell-shapes
+emerge in practice that no rule anticipated. Grow it on purpose rather than waiting
+for it to miss. Discovery is <strong>mechanical-first</strong>: sweep the history and recent work
+for a recurring shape the lane does not catch. An agent seldom perceives its own
+register as a tell, so this reflection is <strong>prompted</strong>, at the verify gate before a
+milestone closes and at adoption, and the agent assists rather than leads. <strong>The
+operator validates</strong> whether a surfaced shape is a genuine tell or legitimate domain
+vocabulary, by one test: is the shape a property of how models segment work, or of
+this project's own domain? Authority over a grammar change rests with the operator;
+an agent proposes a change and never approves one.</p>
+<p><strong>A confirmed tell graduates into the shared grammar; legitimacy stays local.</strong> The
+two run in opposite directions because a tell is a property of machine register that
+recurs across projects, while a legitimate token (a version string, a product
+identifier, a cited tracker reference) belongs to one project. So a confirmed tell is
+<strong>proposed upstream</strong> to the shared grammar the lane consumes, where every project
+gains it on the next bump; the project that finds it does not edit that shared source
+itself. A legitimate tell-shaped token stays in the per-project <code>LEXICON</code>. The host's
+own maintainer validates universality and releases the graduation.</p>
+<p><strong>Growth never inverts the disposition order, and it looks forward.</strong> Reword a
+positional or ordinal reference into content by default, since a content name is
+almost always available; box or declare an irreducible citation; declare the
+numeral-free contextual prefix when a shape is a genuine quantity; and reserve a
+graduation for the residue that still recurs once rewording is impossible. Harvesting
+at adoption proposes what to catch from then on, and leaves the immutable past alone,
+which migration disposes of by renaming live files and boxing frozen records. When a
+later grammar bump flags an existing <strong>live</strong> doc, reword it; a <strong>frozen</strong> record is
+boxed. A graduation that proves to over-flag is narrowed by a later grammar release,
+the same as any behaviour fix.</p>
 </li>
 <li>
 <p><strong>Requirements</strong>: <code>tools/allium</code> (MIT, by JUXT). Does the software meet the
