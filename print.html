@@ -571,7 +571,10 @@ tropes.fyi names (decoration dashes and arrows, tricolons, hypophora, and so on)
 The bar matches the naming audit: authored docs carry <strong>zero</strong> prose tropes, as an
 <strong>ongoing</strong> rule, not a one-time migration. It is wired into the <strong>receipts
 mechanism</strong>: the <code>verify</code> phase <strong>applies</strong> the prose audit and <strong>generates</strong> a
-receipt, and <code>software --check</code> re-verifies that receipt by re-running <code>host-lint --prose</code>, so a doc that regresses to slop re-opens it as a HAZARD. The one exception
+receipt, and <code>software --check</code> re-verifies that receipt by re-running the prose
+audit (<code>host-lifecycle prose</code>, host-lint's <code>--docs</code> engine run in-process, so the
+gate needs no host-lint on PATH), so a doc that regresses to slop re-opens it as a
+HAZARD. The one exception
 is <code>MEMORY.md</code>, the <strong>agent's own append-only working memory</strong>: it is excluded from
 both the naming and prose audits via <code>.host-lintignore</code>, never rewritten.</p>
 <p><strong>The grammar is living, and grows by reflective practice.</strong> The lane enforces a
@@ -1158,6 +1161,12 @@ action   = Bump your pinned host-lint to v0.9.0, which flags a positional refere
 requires = host-lifecycle v0.20.0
 independent = true
 verify   = grep -rqs "grows by reflective practice" host-template/CLAUDE.md</p>
+<p>[upgrade "e280a8d"]
+title    = The verify recheck re-runs the prose audit, so the gate enforces prose hygiene
+action   = Bump your pinned host-lifecycle to v0.22.0, which adds <code>host-lifecycle prose &lt;dir&gt;</code>, host-lint's <code>--docs</code> prose audit run in-process so the gate needs no host-lint on PATH (a development host whose host-lint is embedded Where software still runs it). The <code>verify</code> phase <code>recheck =</code> in <code>lifecycle.manifest</code> now chains <code>host-lifecycle prose .</code> after <code>validate</code>, so <code>software --check</code> re-verifies the verify receipt by re-running the prose audit and re-opens any doc that regressed to slop as a HAZARD. This enforces the standing prose-hygiene rule the spine already states; before it the recheck ran only <code>validate</code>, so a prose regression slipped past the gate.
+requires = host-lifecycle v0.22.0
+independent = true
+verify   = grep -rqs "host-lifecycle prose" host-template/lifecycle.manifest</p>
 
                     </main>
 

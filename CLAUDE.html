@@ -367,7 +367,10 @@ tropes.fyi names (decoration dashes and arrows, tricolons, hypophora, and so on)
 The bar matches the naming audit: authored docs carry <strong>zero</strong> prose tropes, as an
 <strong>ongoing</strong> rule, not a one-time migration. It is wired into the <strong>receipts
 mechanism</strong>: the <code>verify</code> phase <strong>applies</strong> the prose audit and <strong>generates</strong> a
-receipt, and <code>software --check</code> re-verifies that receipt by re-running <code>host-lint --prose</code>, so a doc that regresses to slop re-opens it as a HAZARD. The one exception
+receipt, and <code>software --check</code> re-verifies that receipt by re-running the prose
+audit (<code>host-lifecycle prose</code>, host-lint's <code>--docs</code> engine run in-process, so the
+gate needs no host-lint on PATH), so a doc that regresses to slop re-opens it as a
+HAZARD. The one exception
 is <code>MEMORY.md</code>, the <strong>agent's own append-only working memory</strong>: it is excluded from
 both the naming and prose audits via <code>.host-lintignore</code>, never rewritten.</p>
 <p><strong>The grammar is living, and grows by reflective practice.</strong> The lane enforces a
