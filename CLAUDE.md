@@ -406,7 +406,8 @@ is **driven by the tool, never hand-operated**, and the rule is **every phase
 emits a receipt**, not "every phase runs". Modality is first-class: a phase may be
 **conditional** (embed and release apply only with a Where room) or **recurring**
 (once per software component), so it can legitimately not run; even then it records
-a **receipt** in `.host-receipts`, written by the tool: `done` with re-derivable
+a **receipt** written by the tool, in `.host-receipts` for a methodology-version phase
+(adopt, upgrade) and `.host-lifecycle-receipts` for an operational one: `done` with re-derivable
 evidence, `skip` with a cited reason, or tool-computed `n-a`. `host-lifecycle
 software --check` re-verifies each `done` by the manifest's closed `recheck =` and
 **HAZARDs a phase with no receipt**, the one defect the gate needs; a protected
@@ -558,10 +559,10 @@ available to greenfield software.
 
 ## Upgrading
 
-Adopting is one event; the template moves on. The `.host` stamp records **what you
-have applied**: a `baseline` ledger entry (every entry at or before its position in
-`UPGRADING.md` counts as applied) plus an optional `applied` set of entries taken
-out of order. `UPGRADING.md` is the ledger of actions, one `[upgrade "<revision>"]`
+Adopting is one event; the template moves on. The `.host` stamp records the `baseline`
+ledger entry (every entry at or before its position in `UPGRADING.md` counts as applied).
+The `applied` set of out-of-order entries lives in `.host-receipts` (the methodology-version
+trail); `host-lifecycle migrate-receipts` moves it there from a legacy `.host`. `UPGRADING.md` is the ledger of actions, one `[upgrade "<revision>"]`
 stanza each, ordered by file position; a stanza may declare `independent` or
 `depends = <id> …` (logical prerequisites, distinct from the `requires` tool-version
 floor) and a `verify` post-condition.
