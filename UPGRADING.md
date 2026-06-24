@@ -180,3 +180,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.20.0
     independent = true
     verify   = grep -rqs "grows by reflective practice" host-template/CLAUDE.md
+
+[upgrade "e280a8d"]
+    title    = The verify recheck re-runs the prose audit, so the gate enforces prose hygiene
+    action   = Bump your pinned host-lifecycle to v0.22.0, which adds `host-lifecycle prose <dir>`, host-lint's `--docs` prose audit run in-process so the gate needs no host-lint on PATH (a development host whose host-lint is embedded Where software still runs it). The `verify` phase `recheck =` in `lifecycle.manifest` now chains `host-lifecycle prose .` after `validate`, so `software --check` re-verifies the verify receipt by re-running the prose audit and re-opens any doc that regressed to slop as a HAZARD. This enforces the standing prose-hygiene rule the spine already states; before it the recheck ran only `validate`, so a prose regression slipped past the gate.
+    requires = host-lifecycle v0.22.0
+    independent = true
+    verify   = grep -rqs "host-lifecycle prose" host-template/lifecycle.manifest
