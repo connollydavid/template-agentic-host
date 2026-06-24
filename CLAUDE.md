@@ -230,10 +230,14 @@ lanes:
    is `MEMORY.md`, the **agent's own append-only working memory**: it is excluded from
    both the naming and prose audits via `.host-lintignore`, never rewritten.
 
-   **The grammar is living, and grows by reflective practice.** The lane enforces a
-   shared corpus of tells, and that corpus is incomplete by nature: new tell-shapes
-   emerge in practice that no rule anticipated. Grow it on purpose rather than waiting
-   for it to miss. Discovery is **mechanical-first**: sweep the history and recent work
+   **The methodology grows by reflective practice, because an agent is blind to its own
+   drift.** An agent perceives neither the register it emits nor the restatements its own
+   change stales, so both are re-examined on purpose, **prompted** at the trust
+   boundaries (the verify gate, adoption), **mechanical-first**, and **operator-validated**.
+   Two arms run under this one principle. The first, **gather**, looks forward and grows
+   the living grammar: the lane enforces a shared corpus of tells, and that corpus is
+   incomplete by nature, so new tell-shapes that emerge in practice are swept up rather
+   than waited for. Discovery is **mechanical-first**: sweep the history and recent work
    for a recurring shape the lane does not catch. An agent seldom perceives its own
    register as a tell, so this reflection is **prompted**, at the verify gate before a
    milestone closes and at adoption, and the agent assists rather than leads. **The
@@ -261,6 +265,32 @@ lanes:
    later grammar bump flags an existing **live** doc, reword it; a **frozen** record is
    boxed. A graduation that proves to over-flag is narrowed by a later grammar release,
    the same as any behaviour fix.
+
+   **The second arm, reconcile, looks backward at the project's own restatements.**
+   Copy-at-version keeps the verbatim spine current, but a project also *restates*
+   methodology in its own prose: its room map, its tool family, its verification model,
+   its recorded Where layout. When a spine change moves a concept, that restatement
+   silently drifts, because the upgrade propagates the spine yet never re-reads the
+   paraphrase. **Prefer pointing over paraphrasing**: an instance doc should point at the
+   spine, not restate it, and a restatement that remains is a reconciliation liability the
+   project chooses to carry, which reconcile maintains. **Scope is machine-checkable and
+   annotation-backed, not a judgment**: a restatement that must stay carries an inline
+   `<!-- host-reconcile: KIND -->` annotation declaring an assertion the tool checks
+   against a source of truth (the host-* family list and the verification-ladder drivers
+   the lifecycle manifest records, the fixed `software/` and `plan/` layout), so the check
+   is operable at the weak-agent bar. `host-lifecycle reconcile` runs it over the
+   annotated set; the kinds are `family`, `verification`, `where-root`, and `spec-path`.
+   **The trigger is conditional and host-aware.** A `restates =` field on an `UPGRADING`
+   entry marks a drift-capable spine move and names the kinds it stales, so the `upgrade`
+   skill re-reads them; **adoption** runs the full reconcile once. For a **development
+   host** that authors its spine changes with no upgrade record, the **verify gate** is the
+   binding trigger: `software --check` runs reconcile in its recheck. **Disposition is
+   three-way**, as for a flagged tell: reword a live restatement to match the spine, box a
+   frozen citation, forward-correct an immutable record (a `call/` body, a `Status: done`
+   doc, `MEMORY.md`). A reconcile fix stays **local** and never propagates, the mirror of a
+   gathered tell graduating **upstream**. A sibling check closes decision-status drift:
+   `host-lifecycle validate` HAZARDs an `accepted` `call/` decision whose `Scope:` names
+   `host-template`, since its rule is now spine-resident and belongs superseded there.
 2. **Requirements**: `tools/allium` (MIT, by JUXT). Does the software meet the
    behaviour the spec states? Author and maintain `.allium` specs **through the
    allium skills**, not by hand: `elicit`/`distill` to author, `tend` to evolve,
