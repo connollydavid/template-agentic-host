@@ -621,10 +621,12 @@ stable <code>{#id}</code> anchor on a heading in an authored doc (its home), and
 with a <code>[text](FILE#id)</code> link rather than restating it. For example, a home is the
 heading <code>## Components {#components}</code> (the <code>{#id}</code> sits at the end of the heading) and a
 pointer is <code>[components](STRUCTURE.md#components)</code>. The concepts are <code>components</code>,
-<code>verifiers</code>, <code>software-root</code>, and <code>spec-home</code>, and their values are the project's own,
-read from its <code>.host-software</code>: the <code>[software]</code> members are the <code>components</code> (a project
-<em>with</em> a single-file front door sets it apart by <code>front-door = true</code>; most have none),
-and the <code>[verification]</code> drivers are the <code>verifiers</code>. The lifecycle manifest is phases only, so no adopter
+<code>verifiers</code>, <code>software-root</code>, and <code>spec-home</code>. The first two are project-local, read from
+its <code>.host-software</code>: the <code>[software]</code> members are the <code>components</code> (a project <em>with</em> a
+single-file front door sets it apart by <code>front-door = true</code>; most have none), and the
+<code>[verification]</code> drivers are the <code>verifiers</code>. The last two are the fixed layout:
+<code>software-root</code> is where the project's software lives (<code>software/</code>) and <code>spec-home</code> is
+where its specs live, with the software. The lifecycle manifest is phases only, so no adopter
 inherits another project's facts; <code>manifest --check</code> rejects a project-fact stanza.
 <code>host-lifecycle reconcile</code> runs three checks over the tracked docs, operable at the
 weak-agent bar: <strong>link-integrity</strong> (every concept link resolves to its home),
@@ -1218,6 +1220,12 @@ action   = Bump your pinned host-lifecycle to v0.24.2, which adds <code>host-lif
 requires = host-lifecycle v0.24.2
 independent = true
 verify   = grep -rqs "Two arms run under this one principle" host-template/CLAUDE.md</p>
+<p>[upgrade "7be692f"]
+title    = Reconcile evolves to concept-as-URI; the lifecycle manifest is phases-only
+action   = Bump your pinned host-lifecycle to v0.25.0 and move to this host-template revision together (a partial bump leaves the old manifest stanzas under the hardened <code>manifest --check</code>). The lifecycle manifest is now phases only; a project's own facts live in its <code>.host-software</code>. Define each methodology concept once at a <code>{#id}</code> anchor on a heading (for example <code>## Components {#components}</code>) in a doc of your choice, and point at it elsewhere with <code>[text](FILE#id)</code>; reconcile runs link-integrity, declared-anchor, and coverage over your docs. The concepts: <code>components</code> (your host-* tools, the <code>[software]</code> members of <code>.host-software</code> minus a single-file front door marked <code>front-door = true</code> if you have one), <code>verifiers</code> (your verification drivers, named on a <code>drivers = ...</code> line under a <code>[verification]</code> stanza you add to <code>.host-software</code>, for example a <code>[verification]</code> stanza whose line is <code>drivers = host-lint allium specula host-prove</code>), <code>software-root</code> (where your software lives, <code>software/</code>), and <code>spec-home</code> (where your specs live, with the software). Each home that lists a set must name the whole set; coverage flags an omission. Convert each surviving inline <code>&lt;!-- host-reconcile: KIND --&gt;</code> annotation by replacing its enumeration and comment with a single such link. You may migrate gradually: the inline annotations keep working, warned, until a later revision retires them. See the reconcile section in <code>CLAUDE.md</code> for the full rules.
+requires = host-lifecycle v0.25.0
+independent = true
+verify   = grep -rqs "rejects a project-fact stanza" host-template/CLAUDE.md</p>
 
                     </main>
 

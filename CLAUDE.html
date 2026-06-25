@@ -416,10 +416,12 @@ stable <code>{#id}</code> anchor on a heading in an authored doc (its home), and
 with a <code>[text](FILE#id)</code> link rather than restating it. For example, a home is the
 heading <code>## Components {#components}</code> (the <code>{#id}</code> sits at the end of the heading) and a
 pointer is <code>[components](STRUCTURE.md#components)</code>. The concepts are <code>components</code>,
-<code>verifiers</code>, <code>software-root</code>, and <code>spec-home</code>, and their values are the project's own,
-read from its <code>.host-software</code>: the <code>[software]</code> members are the <code>components</code> (a project
-<em>with</em> a single-file front door sets it apart by <code>front-door = true</code>; most have none),
-and the <code>[verification]</code> drivers are the <code>verifiers</code>. The lifecycle manifest is phases only, so no adopter
+<code>verifiers</code>, <code>software-root</code>, and <code>spec-home</code>. The first two are project-local, read from
+its <code>.host-software</code>: the <code>[software]</code> members are the <code>components</code> (a project <em>with</em> a
+single-file front door sets it apart by <code>front-door = true</code>; most have none), and the
+<code>[verification]</code> drivers are the <code>verifiers</code>. The last two are the fixed layout:
+<code>software-root</code> is where the project's software lives (<code>software/</code>) and <code>spec-home</code> is
+where its specs live, with the software. The lifecycle manifest is phases only, so no adopter
 inherits another project's facts; <code>manifest --check</code> rejects a project-fact stanza.
 <code>host-lifecycle reconcile</code> runs three checks over the tracked docs, operable at the
 weak-agent bar: <strong>link-integrity</strong> (every concept link resolves to its home),

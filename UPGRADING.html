@@ -343,6 +343,12 @@ action   = Bump your pinned host-lifecycle to v0.24.2, which adds <code>host-lif
 requires = host-lifecycle v0.24.2
 independent = true
 verify   = grep -rqs "Two arms run under this one principle" host-template/CLAUDE.md</p>
+<p>[upgrade "7be692f"]
+title    = Reconcile evolves to concept-as-URI; the lifecycle manifest is phases-only
+action   = Bump your pinned host-lifecycle to v0.25.0 and move to this host-template revision together (a partial bump leaves the old manifest stanzas under the hardened <code>manifest --check</code>). The lifecycle manifest is now phases only; a project's own facts live in its <code>.host-software</code>. Define each methodology concept once at a <code>{#id}</code> anchor on a heading (for example <code>## Components {#components}</code>) in a doc of your choice, and point at it elsewhere with <code>[text](FILE#id)</code>; reconcile runs link-integrity, declared-anchor, and coverage over your docs. The concepts: <code>components</code> (your host-* tools, the <code>[software]</code> members of <code>.host-software</code> minus a single-file front door marked <code>front-door = true</code> if you have one), <code>verifiers</code> (your verification drivers, named on a <code>drivers = ...</code> line under a <code>[verification]</code> stanza you add to <code>.host-software</code>, for example a <code>[verification]</code> stanza whose line is <code>drivers = host-lint allium specula host-prove</code>), <code>software-root</code> (where your software lives, <code>software/</code>), and <code>spec-home</code> (where your specs live, with the software). Each home that lists a set must name the whole set; coverage flags an omission. Convert each surviving inline <code>&lt;!-- host-reconcile: KIND --&gt;</code> annotation by replacing its enumeration and comment with a single such link. You may migrate gradually: the inline annotations keep working, warned, until a later revision retires them. See the reconcile section in <code>CLAUDE.md</code> for the full rules.
+requires = host-lifecycle v0.25.0
+independent = true
+verify   = grep -rqs "rejects a project-fact stanza" host-template/CLAUDE.md</p>
 
                     </main>
 
