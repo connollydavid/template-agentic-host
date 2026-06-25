@@ -278,7 +278,7 @@ lanes:
    pointer is `[components](STRUCTURE.md#components)`. The concepts are `components`,
    `verifiers`, `software-root`, and `spec-home`. The first two are project-local, read from
    its `.host-software`: the `[software]` members are the `components` (a project *with* a
-   single-file front door sets it apart by `front-door = true`; most have none), and the
+   single-file entrance sets it apart with an `[entrance]` stanza naming that member; most have none), and the
    `[verification]` drivers are the `verifiers`. The last two are the fixed layout:
    `software-root` is where the project's software lives (`software/`) and `spec-home` is
    where its specs live, with the software. The lifecycle manifest is phases only, so no adopter
@@ -301,6 +301,18 @@ lanes:
    gathered tell graduating **upstream**. A sibling check closes decision-status drift:
    `host-lifecycle validate` HAZARDs an `accepted` `call/` decision whose `Scope:` names
    `host-template`, since its rule is now spine-resident and belongs superseded there.
+   **The entrance check is reconcile's standalone sibling.** A document read out of context
+   cannot point at a definition, so a single-file entry restates the spine and stales, whether
+   a front-door README or a standalone `SKILL.md` loaded on its own. The entrance check holds
+   such a document by coverage and generation, the way reconcile holds a linkable one by
+   pointers. A project declares one entrance, a global singleton, in an `[entrance]` stanza in
+   `.host-software`: the `member` it belongs to (set apart from `components`), the `document`
+   within that member (default `README.md`, so a `SKILL.md` or a landing page is reached by
+   path), and the concepts it `restates` (`true` for every concept, or a named subset).
+   `host-lifecycle entrance --check` then holds the document complete against the declared
+   concepts: it generates the `.host` stamp and covers the rest. A document that restates only
+   home-less doctrine declares no checkable concept, and the tool says so rather than claim a
+   coverage it cannot deliver.
 2. **Requirements**: `tools/allium` (MIT, by JUXT). Does the software meet the
    behaviour the spec states? Author and maintain `.allium` specs **through the
    allium skills**, not by hand: `elicit`/`distill` to author, `tend` to evolve,
