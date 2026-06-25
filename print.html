@@ -623,7 +623,7 @@ heading <code>## Components {#components}</code> (the <code>{#id}</code> sits at
 pointer is <code>[components](STRUCTURE.md#components)</code>. The concepts are <code>components</code>,
 <code>verifiers</code>, <code>software-root</code>, and <code>spec-home</code>. The first two are project-local, read from
 its <code>.host-software</code>: the <code>[software]</code> members are the <code>components</code> (a project <em>with</em> a
-single-file front door sets it apart by <code>front-door = true</code>; most have none), and the
+single-file entrance sets it apart with an <code>[entrance]</code> stanza naming that member; most have none), and the
 <code>[verification]</code> drivers are the <code>verifiers</code>. The last two are the fixed layout:
 <code>software-root</code> is where the project's software lives (<code>software/</code>) and <code>spec-home</code> is
 where its specs live, with the software. The lifecycle manifest is phases only, so no adopter
@@ -645,7 +645,19 @@ frozen citation, forward-correct an immutable record (a <code>call/</code> body,
 doc, <code>MEMORY.md</code>). A reconcile fix stays <strong>local</strong> and never propagates, the mirror of a
 gathered tell graduating <strong>upstream</strong>. A sibling check closes decision-status drift:
 <code>host-lifecycle validate</code> HAZARDs an <code>accepted</code> <code>call/</code> decision whose <code>Scope:</code> names
-<code>host-template</code>, since its rule is now spine-resident and belongs superseded there.</p>
+<code>host-template</code>, since its rule is now spine-resident and belongs superseded there.
+<strong>The entrance check is reconcile's standalone sibling.</strong> A document read out of context
+cannot point at a definition, so a single-file entry restates the spine and stales, whether
+a front-door README or a standalone <code>SKILL.md</code> loaded on its own. The entrance check holds
+such a document by coverage and generation, the way reconcile holds a linkable one by
+pointers. A project declares one entrance, a global singleton, in an <code>[entrance]</code> stanza in
+<code>.host-software</code>: the <code>member</code> it belongs to (set apart from <code>components</code>), the <code>document</code>
+within that member (default <code>README.md</code>, so a <code>SKILL.md</code> or a landing page is reached by
+path), and the concepts it <code>restates</code> (<code>true</code> for every concept, or a named subset).
+<code>host-lifecycle entrance --check</code> then holds the document complete against the declared
+concepts: it generates the <code>.host</code> stamp and covers the rest. A document that restates only
+home-less doctrine declares no checkable concept, and the tool says so rather than claim a
+coverage it cannot deliver.</p>
 </li>
 <li>
 <p><strong>Requirements</strong>: <code>tools/allium</code> (MIT, by JUXT). Does the software meet the
@@ -1282,6 +1294,12 @@ action   = Bump your pinned host-lifecycle to v0.26.0 and move to this host-temp
 requires = host-lifecycle v0.26.0
 independent = true
 verify   = grep -rqs "in-plan tasks are receipted nodes" host-template/CLAUDE.md</p>
+<p>[upgrade "2dbcfd7"]
+title    = The entrance check holds a self-contained document to the spine
+action   = Bump your pinned host-lifecycle to v0.29.0 and move to this host-template revision together. A document read out of context cannot point at a definition, so the entrance check holds it by coverage and generation, reconcile's standalone sibling. Declare one entrance, a global singleton, in an <code>[entrance]</code> stanza in <code>.host-software</code> naming the <code>member</code> it belongs to (set apart from <code>components</code>), the <code>document</code> within that member (default <code>README.md</code>), and the concepts it <code>restates</code> (<code>true</code> for every concept, or a named subset of <code>phases</code>, <code>tools</code>, <code>stamp</code>). <code>host-lifecycle entrance --check</code> then holds that document complete against the declared concepts. If you marked a single-file front door with the legacy <code>front-door = true</code> or <code>entrance = true</code> on its <code>[software]</code> member, replace it with an <code>[entrance]</code> stanza naming that member; the legacy marker is still accepted, warned, until a later revision retires it.
+requires = host-lifecycle v0.29.0</p>
+<pre><code>verify   = grep -rqs "entrance check is reconcile's standalone sibling" host-template/CLAUDE.md
+</code></pre>
 
                     </main>
 
