@@ -223,7 +223,7 @@ keyed by the template revision at which its action became required.
 
     verify   = grep -rqs "entrance check is reconcile's standalone sibling" host-template/CLAUDE.md
 
-[upgrade "PENDING"]
+[upgrade "de8a517"]
     title    = The legacy per-member entrance marker is retired
     action   = Bump your pinned host-lifecycle to v0.30.0 and move to this host-template revision together. The legacy per-member entrance marker is retired: a `front-door = true` or `entrance = true` on a `[software]` member is now a loud error, not silently accepted. Replace any such marker with an `[entrance]` stanza naming that member (the `member`, an optional `document` with default `README.md`, and `restates`); see the entrance section in `CLAUDE.md`. A project with no single-file entrance carries no such marker and needs no change.
     requires = host-lifecycle v0.30.0
