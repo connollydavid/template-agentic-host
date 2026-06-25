@@ -313,6 +313,8 @@ lanes:
    concepts: it generates the `.host` stamp and covers the rest. A document that restates only
    home-less doctrine declares no checkable concept, and the tool says so rather than claim a
    coverage it cannot deliver.
+   The legacy per-member marker is retired: a surviving `front-door = true` or `entrance =
+   true` on a `[software]` member is a loud error, not the entrance, so declare the stanza.
 2. **Requirements**: `tools/allium` (MIT, by JUXT). Does the software meet the
    behaviour the spec states? Author and maintain `.allium` specs **through the
    allium skills**, not by hand: `elicit`/`distill` to author, `tend` to evolve,
