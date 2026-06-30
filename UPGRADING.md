@@ -243,3 +243,10 @@ keyed by the template revision at which its action became required.
     requires = host-lifecycle v0.31.0
     independent = true
     verify   = grep -rqs "a re-deriver that runs" host-template/CLAUDE.md
+
+[upgrade "46a1fd2"]
+    title    = A verification lane reports clean only after it performs its check
+    action   = Bump your pinned host-lifecycle to v0.32.0 and move to this host-template revision together. The obligation-discharge check now verifies an `exercises=<symbol>` link rather than only that a `test:` name resolves. Add to each behavioural obligation a link naming a function the discharging test drives, and run `host-lifecycle obligations <spec> --tests <dir> --strict-discharge` where the gate runs. The strict mode is opt-in, so a tool bump leaves your ladder green; the reject names the test and the symbol it is missing. Do not relabel a behavioural obligation `structural` to dodge it, and give every `waived:` a real reason. Separately, `software --verify-build` is now three-state: it prints its clean line only when a build was verified and none was UNVERIFIABLE, and it exits non-zero on an in-scope build it could not run (no container runtime, or no toolchain pin), so a runtime-less CI that relied on its exit 0 must gain a runtime or scope that build out. A project whose obligations are all `structural` carries no `exercises=` link and needs only the verify-build change.
+    requires = host-lifecycle v0.32.0
+    independent = true
+    verify   = grep -rqs "reports clean only after it performs its check" host-template/CLAUDE.md
