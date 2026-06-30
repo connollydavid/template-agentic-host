@@ -391,6 +391,19 @@ a test, for all inputs/parameters). `host-lifecycle obligations <spec> --tests <
 `.allium` that has no `.obligations` manifest. An
 obligation left undispositioned is a defect. Discharge is total, per component.
 
+**A verification lane reports clean only after it performs its check (no-hollow-green,
+`call/0035`).** A `test:` disposition is name-presence until it carries an `exercises=<symbol>`
+link to a function the discharging test drives. `host-lifecycle obligations --strict-discharge`
+then HAZARDs a `test:` whose named test does not reference that symbol, an `#[ignore]`'d
+discharging test, a behavioural obligation relabelled `structural`, or a `waived:` lacking a
+reason. The link is an auditable heuristic, weaker than a proof: the claim that a test truly
+drives the rule is the opt-in re-derivation below, and what the tool cannot mechanically
+establish is labelled *attested* rather than asserted as proved. The strict check is staged
+warn-then-retire, so bumping the tool never reddens a green ladder. The build lane obeys the
+same rule: `software --verify-build` prints its clean line only when a build was verified and
+none was left unrun, and it exits non-zero on an in-scope build it could not rebuild, so it
+never attests a guarantee it did not establish.
+
 **A rung is discharged by re-derivation, not by name-presence (`call/0018`).** That a
 proof *exists* is not that it *passes*. `--prove` only lints that the rung's named
 target is present (AVAILABLE ≠ DISCHARGED). The real discharge is
