@@ -529,6 +529,18 @@ a test, for all inputs/parameters). <code>host-lifecycle obligations &lt;spec&gt
 <code>--prove</code> sources; the software's CI runs it, and <code>software --check</code> HAZARDs a
 <code>.allium</code> that has no <code>.obligations</code> manifest. An
 obligation left undispositioned is a defect. Discharge is total, per component.</p>
+<p><strong>A verification lane reports clean only after it performs its check (no-hollow-green,
+<code>call/0035</code>).</strong> A <code>test:</code> disposition is name-presence until it carries an <code>exercises=&lt;symbol&gt;</code>
+link to a function the discharging test drives. <code>host-lifecycle obligations --strict-discharge</code>
+then HAZARDs a <code>test:</code> whose named test does not reference that symbol, an <code>#[ignore]</code>'d
+discharging test, a behavioural obligation relabelled <code>structural</code>, or a <code>waived:</code> lacking a
+reason. The link is an auditable heuristic, weaker than a proof: the claim that a test truly
+drives the rule is the opt-in re-derivation below, and what the tool cannot mechanically
+establish is labelled <em>attested</em> rather than asserted as proved. The strict check is staged
+warn-then-retire, so bumping the tool never reddens a green ladder. The build lane obeys the
+same rule: <code>software --verify-build</code> prints its clean line only when a build was verified and
+none was left unrun, and it exits non-zero on an in-scope build it could not rebuild, so it
+never attests a guarantee it did not establish.</p>
 <p><strong>A rung is discharged by re-derivation, not by name-presence (<code>call/0018</code>).</strong> That a
 proof <em>exists</em> is not that it <em>passes</em>. <code>--prove</code> only lints that the rung's named
 target is present (AVAILABLE ≠ DISCHARGED). The real discharge is
